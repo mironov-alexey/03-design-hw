@@ -9,7 +9,6 @@ namespace _03_design_hw
 {
     interface ICloudCreator
     {
-        Dictionary<Word, int> Frequency{ get; }
-        Image Create();
+        void DrawAndSaveCloudImage();
     }
 }
