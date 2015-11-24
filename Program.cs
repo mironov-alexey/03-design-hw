@@ -20,48 +20,6 @@ namespace _03_design_hw
             kernel.Bind<BaseLoader>().To<DictionaryLoader>().WithConstructorArgument(args[0]);
             kernel.Bind<ICloudCreator>().To<SimpleCloudCreator>();
             kernel.Get<ICloudCreator>().DrawAndSaveCloudImage();
-
-//            var wc = new WordCloud.WordCloud(640, 480);
-//            var wordCloud = new WordCloud.WordCloud(640, 480);
-//            var words = new List<string>
-//            {
-//                "begin",
-//                "end",
-//                "start",
-//                "work",
-//                "works",
-//                "apple",
-//                "banana",
-//            };
-//            
-//            var freqs = new List<int>
-//            {
-//                4, 3, 6, 10, 20, 11, 25
-//            };
-//            var textSize = GetTextSize("Hello");
-//            using (Image b = new Bitmap((int)textSize.Height, (int)textSize.Width))
-//            {
-//                using (Graphics g = Graphics.FromImage(b))
-//                {
-//
-//                    Console.WriteLine(textSize);
-//                    g.Clear(Color.Black);
-//                    g.RotateTransform(90);
-////                    g.DrawString("Hello", new Font("Times New Roman", 20f), new SolidBrush(Color.White), 0, -30);
-//                    g.DrawString("Hello", new Font("Times New Roman", 20f), new SolidBrush(Color.White), 0,
-//                        -textSize.Height*4/5);
-////                    g.RotateTransform(-90);
-////                    g.DrawString("World", new Font("Times New Roman", 20f), new SolidBrush(Color.White), 0, 0);
-//                }
-//                b.Save(@"green.png", ImageFormat.Png);
-//            }
-        }
-
-        private static SizeF GetTextSize(string text)
-        {
-            using (Image tempImage = new Bitmap(1, 1))
-            using (Graphics g = Graphics.FromImage(tempImage))
-                return g.MeasureString(text, new Font("Times New Roman", 20f));
         }
     }
 }
