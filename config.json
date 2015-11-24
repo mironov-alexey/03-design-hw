@@ -1,0 +1,26 @@
+﻿{
+  "words": "./in.txt",
+  "output": "./output.png",
+  "dictionaries": [
+    [ "./en_US.aff", "./en_US.dic" ]
+  ],
+  "blacklist": "./blacklist.txt",
+  "size": [ 640, 480 ],
+  "colors": [
+    "Red",
+    "Green",
+    "Blue",
+    "Black",
+    "Grey",
+    "BlueViolet",
+    "Crimson",
+    "Chartreuse",
+    "Firebrick",
+    "DarkSlateBlue",
+    "SaddleBrown",
+    "DarkTurquoise"
+  ],
+  "top": 0,
+  "fontSize": [ 10, 120 ],
+  "fontName": "Times New Roman"
+}

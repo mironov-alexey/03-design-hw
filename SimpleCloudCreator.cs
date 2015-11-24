@@ -78,9 +78,7 @@ namespace _03_design_hw
 
         private void DrawWord(Graphics graphics, Word word, Point location, Font font, Color color, bool isVertical=false)
         {
-//            graphics.RotateTransform(isVertical ? 90 : 0); 
             graphics.DrawString(word.WordString, font, new SolidBrush(color), location.X, location.Y);
-//            graphics.RotateTransform(isVertical ? 90 : 0);
         }
 
         private SizeF GetWordRectangleSize(string text, Font font)
@@ -96,9 +94,9 @@ namespace _03_design_hw
 //            var size = (float)(Math.Log(word.Frequency - (MinCount - 1))/constant + Settings.MinFontSize);
             var size = (Settings.MaxFontSize*(word.Frequency - MinCount)/(MaxCount - MinCount));
             size = size == 0 ? size + 20 : size;
-            Console.WriteLine("Word: " + word.WordString + " Count: " + word.Frequency);
-            Console.WriteLine(size);
-            Console.WriteLine(Words.Count);
+//            Console.WriteLine("Word: " + word.WordString + " Count: " + word.Frequency);
+//            Console.WriteLine(size);
+//            Console.WriteLine(Words.Count);
             return new Font(Settings.FontName, size);
         }
         private Point GetWordLocation(Word word, Font font)
