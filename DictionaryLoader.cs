@@ -10,11 +10,9 @@ namespace _03_design_hw
             : base(configPath)
         {
         }
-        public override IEnumerable<string> GetWords()
-        {
-            return File.ReadAllLines(PathToWords)
-                .Where(s => !string.IsNullOrEmpty(s))
-                .Select(x => x.Trim());
-        } 
+        public override IEnumerable<string> GetWords() =>
+            File.ReadAllLines(PathToWords)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Select(x => x.Trim());
     }
 }

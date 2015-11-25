@@ -21,46 +21,35 @@ namespace _03_design_hw
             PathToBanned = JsonConfig["blacklist"].ToString();
         }
 
-        private HashSet<string> GetBannedWords()
-        {
-            return new HashSet<string>(
-                File.ReadAllLines(PathToBanned)
+        private HashSet<string> GetBannedWords() => 
+            new HashSet<string>(
+                File.ReadLines(PathToBanned)
                 .Where(s => !string.IsNullOrEmpty(s))
                 .Select(x => x.Trim()));
-        }
 
-        private Color[] GetColors()
-        {
-            return JsonConfig["colors"]
-                .Select(item => (string)item)                
-                .Where(s => !string.IsNullOrEmpty(s))
-                .Select(Color.FromName)
-                .ToArray();
-        }
+        private Color[] GetColors() => 
+            JsonConfig["colors"]
+            .Select(item => (string)item)                
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Select(ColorTranslator.FromHtml)
+            .ToArray();
 
-        public string GetOutputPath()
-        {
-            return JsonConfig["output"].ToString();
-        }
+        public string GetOutputPath() => JsonConfig["output"].ToString();
 
-        public Dictionary<string, string> GetSpellingDictionaries()
-        {
-            return JsonConfig["dictionaries"]
-                .ToDictionary(
-                token => token[0].ToString(),
-                token => token[1].ToString()
-                );
-        }
+        public Dictionary<string, string> GetSpellingDictionaries() => 
+            JsonConfig["dictionaries"]
+            .ToDictionary(
+            token => token[0].ToString(),
+            token => token[1].ToString());
 
         public TagCloudSettings GetSettings()
         {
-            var size = new Size((int)JsonConfig["size"][0], (int)JsonConfig["size"][1]);
             var fontName = JsonConfig["fontName"].ToString();
             var fontSizes = JsonConfig["fontSize"].Select(token => (int)token).ToArray();
             var minFontSize = fontSizes[0];
             var maxFontSize = fontSizes[1];
             var top = (int)JsonConfig["top"];
-            return new TagCloudSettings(size, GetColors(), GetBannedWords(), fontName, top, minFontSize, maxFontSize);
+            return new TagCloudSettings(GetColors(), GetBannedWords(), fontName, top, minFontSize, maxFontSize);
         }
     }
 }

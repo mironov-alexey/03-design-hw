@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using CommandLine;
 using NHunspell;
 using Ninject;
 using WordCloud;
@@ -15,11 +15,12 @@ namespace _03_design_hw
     {
         static void Main(string[] args)
         {
-            args = new[] {"config.json"};
+            Options options = new Options();
+            Parser.Default.ParseArguments(args, options);
             var kernel = new StandardKernel();
-            kernel.Bind<BaseLoader>().To<DictionaryLoader>().WithConstructorArgument(args[0]);
+            kernel.Bind<BaseLoader>().To<DictionaryLoader>().WithConstructorArgument(options.ConfigPath);
             kernel.Bind<ICloudCreator>().To<SimpleCloudCreator>();
-            kernel.Get<ICloudCreator>().DrawAndSaveCloudImage();
+            kernel.Get<ICloudCreator>().GeneratePreReleaseImage();
         }
     }
 }

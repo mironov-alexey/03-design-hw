@@ -9,6 +9,6 @@ namespace _03_design_hw
 {
     interface ICloudCreator
     {
-        void DrawAndSaveCloudImage();
+        void GeneratePreReleaseImage();
     }
 }
