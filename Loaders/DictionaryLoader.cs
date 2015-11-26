@@ -10,7 +10,7 @@ namespace _03_design_hw
             : base(configPath)
         {
         }
-        public new IEnumerable<string> Words =>
+        public new virtual IEnumerable<string> Words =>
             File.ReadAllLines(InputPath)
             .Where(s => !string.IsNullOrEmpty(s))
             .Select(x => x.Trim());

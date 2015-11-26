@@ -21,5 +21,6 @@
   ],
   "top": 30,
   "fontSize": [ 30, 120 ],
-  "fontName": "Times New Roman"
+  "fontName": "Times New Roman",
+  "size" :  [1280, 1024]
 }

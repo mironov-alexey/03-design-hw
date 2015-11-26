@@ -120,34 +120,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseLoader.cs" />
-    <Compile Include="CloudSaver.cs" />
-    <Compile Include="ICloudCreator.cs" />
+    <Compile Include="Loaders\BaseLoader.cs" />
+    <Compile Include="CloudCreator\CloudCreatorShould.cs" />
+    <Compile Include="Savers\CloudSaver.cs" />
+    <Compile Include="CloudCreator\ICloudCreator.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleCloudCreator.cs" />
-    <Compile Include="DictionaryLoader.cs" />
-    <Compile Include="StatisticShould.cs" />
-    <Compile Include="WordExtensions.cs" />
-    <Compile Include="Statistic.cs" />
-    <Compile Include="TagCloudSettings.cs" />
-    <Compile Include="Word.cs" />
+    <Compile Include="CloudCreator\SimpleCloudCreator.cs" />
+    <Compile Include="Loaders\DictionaryLoader.cs" />
+    <Compile Include="Savers\ICloudSaver.cs" />
+    <Compile Include="Statistic\StatisticShould.cs" />
+    <Compile Include="Word\WordExtensions.cs" />
+    <Compile Include="Statistic\Statistic.cs" />
+    <Compile Include="Word\Word.cs" />
+    <Compile Include="Word\WordExtenstionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="en_US.aff" />
-    <None Include="en_US.dic" />
+    <None Include="Dictionaries\en_US.aff" />
+    <None Include="Dictionaries\en_US.dic" />
     <None Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Hunspellx64.dll">
+    <None Include="dlls\Hunspellx64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Hunspellx86.dll">
+    <None Include="dlls\Hunspellx86.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

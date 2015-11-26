@@ -11,12 +11,12 @@ namespace _03_design_hw
         private Random Random{ get; }
         private int Top{ get; }
         private HashSet<string> BlackList{ get; }
-        public Statistic(TagCloudSettings settings, List<string> words)
+        public Statistic(BaseLoader loader)
         {
-            Words = words;
-            Random = settings.Random;
-            BlackList = settings.BlackList;
-            Top = settings.Top;
+            Random = loader.Random;
+            BlackList = loader.BlackList;
+            Top = loader.Top;
+            Words = loader.Words;
         }
 
         public int MaxCount => WordsWithFrequency.Max(w => w.Frequency);
