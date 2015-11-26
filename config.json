@@ -13,7 +13,6 @@
     "Gray",
     "BlueViolet",
     "Crimson",
-    "Chartreuse",
     "Firebrick",
     "DarkSlateBlue",
     "SaddleBrown",
@@ -21,6 +20,6 @@
     "#a9a9a9"
   ],
   "top": 30,
-  "fontSize": [ 30, 90 ],
+  "fontSize": [ 30, 120 ],
   "fontName": "Times New Roman"
 }

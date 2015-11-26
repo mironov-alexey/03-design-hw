@@ -6,8 +6,7 @@ using System.Linq;
 using CommandLine;
 using NHunspell;
 using Ninject;
-using WordCloud;
-using Mapper;
+using Ninject.Parameters;
 
 namespace _03_design_hw
 {
@@ -18,9 +17,20 @@ namespace _03_design_hw
             Options options = new Options();
             Parser.Default.ParseArguments(args, options);
             var kernel = new StandardKernel();
-            kernel.Bind<BaseLoader>().To<DictionaryLoader>().WithConstructorArgument(options.ConfigPath);
+            kernel.Bind<TagCloudSettings>().ToSelf().InSingletonScope();
+            kernel.Bind<BaseLoader>().To<DictionaryLoader>().InSingletonScope().WithConstructorArgument(options.ConfigPath);
+            kernel.Bind<Statistic>().ToSelf().InSingletonScope().WithConstructorArgument("settings", "words");
             kernel.Bind<ICloudCreator>().To<SimpleCloudCreator>();
-            kernel.Get<ICloudCreator>().GeneratePreReleaseImage();
+
+            var loader = kernel.Get<BaseLoader>();
+            var statistic = kernel.Get<Statistic>(
+                new ConstructorArgument("settings", kernel.Get<TagCloudSettings>()),
+                new ConstructorArgument("words", loader.Words)
+                );
+            var cloudCreator = kernel.Get<ICloudCreator>();
+            var cloud = cloudCreator.GenerateReleaseImage(statistic.WordsWithFrequency);
+            var cloudSaver = kernel.Get<CloudSaver>();
+            cloudSaver.Save(cloud);;
         }
     }
 }
