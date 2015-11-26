@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Net.Configuration;
 using Nuclex.Game.Packing;
+using XnaPoint = Microsoft.Xna.Framework.Point;
 
 
 namespace _03_design_hw
@@ -40,22 +41,20 @@ namespace _03_design_hw
                 return new SizeF(size.Width*0.9f, size.Height*0.85f);
             }
         }
-        private Font GetFont(Word word)
+        public Font GetFont(Word word)
         {
             var size = Settings.MaxFontSize*(word.Frequency - MinCount)/(MaxCount - MinCount);
             size = size < Settings.MinFontSize? size + Settings.MinFontSize : size;
             return new Font(Settings.FontName, size);
         }
-        private Point GetWordLocation(Word word, Font font)
+        private XnaPoint GetWordLocation(Word word, Font font, SizeF rectangleSize)
         {
-            var rectangleSize = GetWordRectangleSize(word.WordString, font);
-            Microsoft.Xna.Framework.Point rectangleLocation;
+            XnaPoint rectangleLocation;
             Packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
-            UpdateBounds(rectangleSize, rectangleLocation);
-            return new Point(rectangleLocation.X, rectangleLocation.Y);
+            return rectangleLocation;
         }
 
-        private void UpdateBounds(SizeF rectangleSize, Microsoft.Xna.Framework.Point rectangleLocation)
+        private void UpdateBounds(SizeF rectangleSize, XnaPoint rectangleLocation)
         {
             if (rectangleSize.Width + rectangleLocation.X > RightBound)
                 RightBound = rectangleLocation.X + (int)rectangleSize.Width;
@@ -71,7 +70,9 @@ namespace _03_design_hw
                 foreach (var word in Words)
                 {
                     var font = GetFont(word);
-                    Point location = GetWordLocation(word, font);
+                    var rectangleSize = GetWordRectangleSize(word.WordString, font);
+                    var location = GetWordLocation(word, font, rectangleSize);
+                    UpdateBounds(rectangleSize, location);
                     var color = GetRandomColor();
                     graphics.DrawString(word.WordString, font, new SolidBrush(color), location.X, location.Y);
                 }
