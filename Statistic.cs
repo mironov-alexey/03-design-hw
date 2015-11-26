@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NHunspell;
 
 namespace _03_design_hw
 {
@@ -12,7 +11,7 @@ namespace _03_design_hw
         private Random Random{ get; }
         private int Top{ get; }
         private HashSet<string> BlackList{ get; }
-        public Statistic(TagCloudSettings settings, IEnumerable<string> words)
+        public Statistic(TagCloudSettings settings, List<string> words)
         {
             Words = words;
             Random = settings.Random;

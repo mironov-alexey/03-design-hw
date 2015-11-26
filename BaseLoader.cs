@@ -9,12 +9,13 @@ namespace _03_design_hw
 {
     public abstract class BaseLoader
     {
+        public string PathToConfig{ get; }
+
         protected BaseLoader(string pathToConfig)
         {
-            JsonConfig = JObject.Parse(File.ReadAllText(pathToConfig));
+            PathToConfig = pathToConfig;
         }
-
-        private JObject JsonConfig{ get; }
+        private JObject JsonConfig => JObject.Parse(File.ReadAllText(PathToConfig));
         public IEnumerable<string> Words =>
                 File.ReadLines(InputPath)
                 .Where(s => !string.IsNullOrEmpty(s))

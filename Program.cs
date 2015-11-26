@@ -4,7 +4,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using CommandLine;
-using NHunspell;
 using Ninject;
 using Ninject.Parameters;
 

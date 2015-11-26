@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Net.Configuration;
-using NHunspell;
 using Nuclex.Game.Packing;
 
 
