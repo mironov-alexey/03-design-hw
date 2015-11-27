@@ -9,9 +9,9 @@ namespace _03_design_hw
 {
     public class CloudSaver : ICloudSaver
     {
-        private BaseLoader Loader { get; }
+        private ILoader Loader { get; }
 
-        public CloudSaver(BaseLoader loader)
+        public CloudSaver(ILoader loader)
         {
             Loader = loader;
         }

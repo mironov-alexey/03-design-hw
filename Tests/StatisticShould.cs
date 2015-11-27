@@ -8,12 +8,12 @@ namespace _03_design_hw
     [TestFixture]
     public class StatisticShould
     {
-        private Mock<BaseLoader> _loader;
+        private Mock<ILoader> _loader;
 
         [SetUp]
         public void SetUp()
         {
-            _loader = new Mock<BaseLoader>("path");
+            _loader = new Mock<ILoader>();
             _loader.Setup(x => x.BlackList).Returns(new HashSet<string>());
             _loader.Setup(x => x.Top).Returns(3);
             _loader.Setup(x => x.Random).Returns(new Random());

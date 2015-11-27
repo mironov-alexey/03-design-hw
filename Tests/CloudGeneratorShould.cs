@@ -13,14 +13,16 @@ namespace _03_design_hw.CloudCreator
     [TestFixture]
     public class CloudGeneratorShould
     {
-        private Mock<BaseLoader> _loader;
+        private Mock<ILoader> _loader;
         private Statistic _statistic;
         [SetUp]
         public void SetUp()
         {
-            _loader = new Mock<BaseLoader>(It.IsAny<string>());
+            _loader = new Mock<ILoader>();
             _loader.Setup(x => x.BlackList).Returns(new HashSet<string>());
             _loader.Setup(x => x.Top).Returns(3);
+            _loader.Setup(x => x.Width).Returns(1024);
+            _loader.Setup(x => x.Height).Returns(1024);
             _loader.Setup(x => x.Random).Returns(new Random());
             _loader.Setup(x => x.FontName).Returns("Arial");
             _loader.Setup(x => x.MaxFontSize).Returns(20);

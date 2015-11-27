@@ -11,7 +11,7 @@ namespace _03_design_hw
         private Random Random{ get; }
         private int Top{ get; }
         private HashSet<string> BlackList{ get; }
-        public Statistic(BaseLoader loader)
+        public Statistic(ILoader loader)
         {
             Random = loader.Random;
             BlackList = loader.BlackList;

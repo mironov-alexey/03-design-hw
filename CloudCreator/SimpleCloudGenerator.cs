@@ -16,12 +16,12 @@ namespace _03_design_hw
     {
         private const int MaxImageSize = 5000;
         private RectanglePacker Packer{ get; }
-        private BaseLoader Loader { get; }
+        private ILoader Loader { get; }
         public Statistic Statistic{ get; }
         protected internal int CurrentWidth {get; set; }
         protected internal int CurrentHeight {get; set; }
         public IEnumerable<Word> Words { get; }
-        public SimpleCloudGenerator(BaseLoader loader, Statistic statistic)
+        public SimpleCloudGenerator(ILoader loader, Statistic statistic)
         {
 
             Loader = loader;
@@ -71,7 +71,7 @@ namespace _03_design_hw
             Packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
             return rectangleLocation;
         }
-        protected internal virtual int GetNewWidth(SizeF rectangleSize, XnaPoint location)
+        protected internal int GetNewWidth(SizeF rectangleSize, XnaPoint location)
         {
             return Math.Max(CurrentWidth, location.X + (int) rectangleSize.Width);
         }
