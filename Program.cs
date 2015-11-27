@@ -24,9 +24,11 @@ namespace _03_design_hw
                     new ConstructorArgument("settings", kernel.Get<BaseLoader>())
                 );
             var cloudCreator = kernel.Get<ICloudCreator>();
-            var cloud = cloudCreator.GenerateReleaseImage(statistic.WordsWithFrequency);
-            var cloudSaver = kernel.Get<CloudSaver>();
-            cloudSaver.Save(cloud);;
+            using (var cloud = cloudCreator.GenerateReleaseImage(statistic.WordsWithFrequency))
+            {
+                var cloudSaver = kernel.Get<CloudSaver>();
+                cloudSaver.Save(cloud);
+            }
         }
     }
 }

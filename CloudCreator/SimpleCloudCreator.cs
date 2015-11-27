@@ -25,25 +25,44 @@ namespace _03_design_hw
         {
             Loader = loader;
             Statistic = statistic;
+            MinCount = statistic.MinCount;
+            MaxCount = statistic.MaxCount;
+            MinFontSize = loader.MinFontSize;
+            MaxFontSize = loader.MaxFontSize;
+            Colors = loader.Colors;
+            FontName = loader.FontName;
+            BlackList = loader.BlackList;
             Packer = new ArevaloRectanglePacker(int.MaxValue, int.MaxValue);
             Words = statistic.WordsWithFrequency;
         }
-        protected internal Color GetRandomColor() => Loader.Colors[Loader.Random.Next(Loader.Colors.Length - 1)];
+
+        private string FontName{ get; }
+
+        private HashSet<string> BlackList{ get; }
+
+        private Color[] Colors{ get; }
+
+        private int MaxFontSize{ get; }
+
+        private int MinFontSize{ get; }
+
+        private int MaxCount{ get; }
+
+        private int MinCount{ get; }
+
+        protected internal Color GetRandomColor() => Colors[Loader.Random.Next(Colors.Length - 1)];
 
         protected internal static SizeF GetWordRectangleSize(string text, Font font)
         {
             using (Image tempImage = new Bitmap(1, 1))
             using (var g = Graphics.FromImage(tempImage))
-            {
-                var size = g.MeasureString(text, font);
-                return new SizeF(size.Width*0.9f, size.Height*0.85f);
-            }
+                return g.MeasureString(text, font);
         }
         protected internal Font GetFont(Word word)
         {
-            var size = Loader.MaxFontSize*(word.Frequency - Statistic.MinCount)/(Statistic.MaxCount - Statistic.MinCount);
-            size = size < Loader.MinFontSize? size + Loader.MinFontSize : size;
-            return new Font(Loader.FontName, size);
+            var size = MaxFontSize*(word.Frequency - MinCount)/(MaxCount - MinCount);
+            size = size < MinFontSize? size + MinFontSize : size;
+            return new Font(FontName, size);
         }
         protected internal XnaPoint GetWordLocation(SizeF rectangleSize)
         {
@@ -51,7 +70,7 @@ namespace _03_design_hw
             Packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
             return rectangleLocation;
         }
-        protected internal int GetNewWidth(SizeF rectangleSize, XnaPoint location)
+        protected internal virtual int GetNewWidth(SizeF rectangleSize, XnaPoint location)
         {
             return Math.Max(CurrentWidth, location.X + (int) rectangleSize.Width);
         }
@@ -62,7 +81,7 @@ namespace _03_design_hw
         }
 
 
-        private Image GeneratePreReleaseImage()
+        protected internal Image GeneratePreReleaseImage()
         {
             var img = new Bitmap(MaxImageSize, MaxImageSize);
             using (Graphics graphics = Graphics.FromImage(img))
