@@ -12,7 +12,7 @@ using XnaPoint = Microsoft.Xna.Framework.Point;
 
 namespace _03_design_hw
 {
-    public class SimpleCloudCreator : ICloudCreator
+    public class SimpleCloudGenerator : ICloudGenerator
     {
         private const int MaxImageSize = 5000;
         private RectanglePacker Packer{ get; }
@@ -21,7 +21,7 @@ namespace _03_design_hw
         protected internal int CurrentWidth {get; set; }
         protected internal int CurrentHeight {get; set; }
         public IEnumerable<Word> Words { get; }
-        public SimpleCloudCreator(BaseLoader loader, Statistic statistic)
+        public SimpleCloudGenerator(BaseLoader loader, Statistic statistic)
         {
             Loader = loader;
             Statistic = statistic;
@@ -32,9 +32,15 @@ namespace _03_design_hw
             Colors = loader.Colors;
             FontName = loader.FontName;
             BlackList = loader.BlackList;
+            Width = loader.Width;
+            Height = loader.Height;
             Packer = new ArevaloRectanglePacker(int.MaxValue, int.MaxValue);
             Words = statistic.WordsWithFrequency;
         }
+
+        private int Height{ get; }
+
+        private int Width{ get; }
 
         private string FontName{ get; }
 
@@ -52,12 +58,6 @@ namespace _03_design_hw
 
         protected internal Color GetRandomColor() => Colors[Loader.Random.Next(Colors.Length - 1)];
 
-        protected internal static SizeF GetWordRectangleSize(string text, Font font)
-        {
-            using (Image tempImage = new Bitmap(1, 1))
-            using (var g = Graphics.FromImage(tempImage))
-                return g.MeasureString(text, font);
-        }
         protected internal Font GetFont(Word word)
         {
             var size = MaxFontSize*(word.Frequency - MinCount)/(MaxCount - MinCount);
@@ -89,10 +89,18 @@ namespace _03_design_hw
                 foreach (var word in Words)
                 {
                     var font = GetFont(word);
-                    var rectangleSize = GetWordRectangleSize(word.WordString, font);
+                    var rectangleSize = graphics.MeasureString(word.WordString, font);
                     var location = GetWordLocation(rectangleSize);
+                    var prevWidth = CurrentWidth;
+                    var prevHeight = CurrentHeight;
                     CurrentWidth = GetNewWidth(rectangleSize, location);
                     CurrentHeight = GetNewHeight(rectangleSize, location);
+                    if (CurrentHeight > Height || CurrentWidth > Width)
+                    {
+                        CurrentHeight = prevHeight;
+                        CurrentWidth = prevWidth;
+                        return img;
+                    }
                     var color = GetRandomColor();
                     graphics.DrawString(word.WordString, font, new SolidBrush(color), location.X, location.Y);
                 }
@@ -100,11 +108,12 @@ namespace _03_design_hw
             }
         }
 
-        public Image GenerateReleaseImage(IEnumerable<Word> words)
+        public Image GenerateCloudImage(IEnumerable<Word> words)
         {
             using (var preReleaseImage = GeneratePreReleaseImage())
             {
-                var releaseImage = new Bitmap(CurrentWidth, CurrentHeight);
+                var releaseImage = new Bitmap(Width, Height);
+//                var releaseImage = new Bitmap(CurrentWidth, CurrentHeight);
                 using (Graphics releaseGraphics = Graphics.FromImage(releaseImage))
                 {
                     releaseGraphics.Clear(Color.White);

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace _03_design_hw
 {
-    interface ICloudCreator
+    interface ICloudGenerator
     {
-        Image GenerateReleaseImage(IEnumerable<Word> words);
+        Image GenerateCloudImage(IEnumerable<Word> words);
     }
 }

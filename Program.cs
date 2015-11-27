@@ -18,13 +18,13 @@ namespace _03_design_hw
             var kernel = new StandardKernel();
             kernel.Bind<BaseLoader>().To<DictionaryLoader>().InSingletonScope().WithConstructorArgument(options.ConfigPath);
             kernel.Bind<Statistic>().ToSelf().InSingletonScope().WithConstructorArgument("settings", "words");
-            kernel.Bind<ICloudCreator>().To<SimpleCloudCreator>();
+            kernel.Bind<ICloudGenerator>().To<SimpleCloudGenerator>();
 
             var statistic = kernel.Get<Statistic>(
                     new ConstructorArgument("settings", kernel.Get<BaseLoader>())
                 );
-            var cloudCreator = kernel.Get<ICloudCreator>();
-            using (var cloud = cloudCreator.GenerateReleaseImage(statistic.WordsWithFrequency))
+            var cloudCreator = kernel.Get<ICloudGenerator>();
+            using (var cloud = cloudCreator.GenerateCloudImage(statistic.WordsWithFrequency))
             {
                 var cloudSaver = kernel.Get<CloudSaver>();
                 cloudSaver.Save(cloud);
