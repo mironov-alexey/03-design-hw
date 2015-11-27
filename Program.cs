@@ -17,11 +17,11 @@ namespace _03_design_hw
             Parser.Default.ParseArguments(args, options);
             var kernel = new StandardKernel();
             kernel.Bind<ILoader>().To<DictionaryLoader>().InSingletonScope().WithConstructorArgument(options.ConfigPath);
-            kernel.Bind<Statistic>().ToSelf().InSingletonScope().WithConstructorArgument("settings", "words");
+            kernel.Bind<Statistic>().ToSelf().InSingletonScope().WithConstructorArgument("loader");
             kernel.Bind<ICloudGenerator>().To<SimpleCloudGenerator>();
 
             var statistic = kernel.Get<Statistic>(
-                    new ConstructorArgument("settings", kernel.Get<ILoader>())
+                    new ConstructorArgument("loader", kernel.Get<ILoader>())
                 );
             var cloudCreator = kernel.Get<ICloudGenerator>();
             using (var cloud = cloudCreator.GenerateCloudImage(statistic.WordsWithFrequency))
