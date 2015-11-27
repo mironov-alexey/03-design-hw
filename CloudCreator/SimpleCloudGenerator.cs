@@ -23,6 +23,7 @@ namespace _03_design_hw
         public IEnumerable<Word> Words { get; }
         public SimpleCloudGenerator(BaseLoader loader, Statistic statistic)
         {
+
             Loader = loader;
             Statistic = statistic;
             MinCount = statistic.MinCount;
@@ -113,7 +114,6 @@ namespace _03_design_hw
             using (var preReleaseImage = GeneratePreReleaseImage())
             {
                 var releaseImage = new Bitmap(Width, Height);
-//                var releaseImage = new Bitmap(CurrentWidth, CurrentHeight);
                 using (Graphics releaseGraphics = Graphics.FromImage(releaseImage))
                 {
                     releaseGraphics.Clear(Color.White);
