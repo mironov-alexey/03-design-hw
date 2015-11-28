@@ -24,7 +24,7 @@ namespace _03_design_hw
                     new ConstructorArgument("loader", kernel.Get<ILoader>())
                 );
             var cloudCreator = kernel.Get<ICloudGenerator>();
-            using (var cloud = cloudCreator.GenerateCloudImage(statistic.WordsWithFrequency))
+            using (var cloud = cloudCreator.GenerateCloudImage())
             {
                 var cloudSaver = kernel.Get<CloudSaver>();
                 cloudSaver.Save(cloud);

@@ -88,9 +88,14 @@ namespace _03_design_hw.CloudCreator
         }
 
         [Test]
-        public void GetWordLocatin()
+        public void Correctly_GenerateImage()
         {
-            
+            var cloudCreator = new Mock<SimpleCloudGenerator>(_loader.Object, _statistic);
+            using (var img = cloudCreator.Object.GenerateCloudImage())
+            {
+                Assert.That(img != null);
+                Assert.That(img.Size.Height <= _loader.Object.Height && img.Size.Width <= _loader.Object.Width);
+            }
         }
     }
 }

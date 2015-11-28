@@ -9,6 +9,6 @@ namespace _03_design_hw
 {
     interface ICloudGenerator
     {
-        Image GenerateCloudImage(IEnumerable<Word> words);
+        Image GenerateCloudImage();
     }
 }

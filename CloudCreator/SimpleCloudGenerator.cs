@@ -109,7 +109,7 @@ namespace _03_design_hw
             }
         }
 
-        public Image GenerateCloudImage(IEnumerable<Word> words)
+        public Image GenerateCloudImage()
         {
             using (var preReleaseImage = GeneratePreReleaseImage())
             {
