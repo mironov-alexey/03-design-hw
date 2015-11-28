@@ -18,8 +18,8 @@ namespace _03_design_hw
         private RectanglePacker Packer{ get; }
         private ILoader Loader { get; }
         public Statistic Statistic{ get; }
-        protected internal int CurrentWidth {get; set; }
-        protected internal int CurrentHeight {get; set; }
+        public int CurrentWidth {get; set; }
+        public int CurrentHeight {get; set; }
         public IEnumerable<Word> Words { get; }
         public SimpleCloudGenerator(ILoader loader, Statistic statistic)
         {
@@ -57,32 +57,32 @@ namespace _03_design_hw
 
         private int MinCount{ get; }
 
-        protected internal Color GetRandomColor() => Colors[Loader.Random.Next(Colors.Length - 1)];
+        public Color RandomColor => Colors[Loader.Random.Next(Colors.Length - 1)];
 
-        protected internal Font GetFont(Word word)
+        public Font GetFont(Word word)
         {
             var size = MaxFontSize*(word.Frequency - MinCount)/(MaxCount - MinCount);
             size = size < MinFontSize? size + MinFontSize : size;
             return new Font(FontName, size);
         }
-        protected internal XnaPoint GetWordLocation(SizeF rectangleSize)
+        public XnaPoint GetWordLocation(SizeF rectangleSize)
         {
             XnaPoint rectangleLocation;
             Packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
             return rectangleLocation;
         }
-        protected internal int GetNewWidth(SizeF rectangleSize, XnaPoint location)
+        public int GetNewWidth(SizeF rectangleSize, XnaPoint location)
         {
             return Math.Max(CurrentWidth, location.X + (int) rectangleSize.Width);
         }
 
-        protected internal int GetNewHeight(SizeF rectangleSize, XnaPoint location)
+        public int GetNewHeight(SizeF rectangleSize, XnaPoint location)
         {
             return Math.Max(CurrentHeight, location.Y + (int)rectangleSize.Height);
         }
 
 
-        protected internal Image GeneratePreReleaseImage()
+        public Image GeneratePreReleaseImage()
         {
             var img = new Bitmap(MaxImageSize, MaxImageSize);
             using (Graphics graphics = Graphics.FromImage(img))
@@ -102,7 +102,7 @@ namespace _03_design_hw
                         CurrentWidth = prevWidth;
                         return img;
                     }
-                    var color = GetRandomColor();
+                    var color = RandomColor;
                     graphics.DrawString(word.WordString, font, new SolidBrush(color), location.X, location.Y);
                 }
                 return img;

@@ -21,7 +21,7 @@ namespace _03_design_hw
                 File.ReadLines(InputPath)
                 .Where(s => !string.IsNullOrEmpty(s))
                 .Select(x => x.Trim());
-        protected string InputPath => JsonConfig["words"].ToString();
+        public string InputPath => JsonConfig["words"].ToString();
         private string PathToBlackList => JsonConfig["blacklist"].ToString();
         public HashSet<string> BlackList => 
             new HashSet<string>(

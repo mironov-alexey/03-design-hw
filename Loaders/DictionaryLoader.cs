@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace _03_design_hw
 {
-    public class DictionaryLoader : BaseLoader, ILoader
+    public class DictionaryLoader : BaseLoader
     {
         public DictionaryLoader(string configPath)
             : base(configPath)

@@ -82,7 +82,7 @@ namespace _03_design_hw.CloudCreator
             var cloudCreator = new Mock<SimpleCloudGenerator>(_loader.Object, _statistic);
             for (var i = 0; i < 1000; i++)
             {
-                var color = cloudCreator.Object.GetRandomColor();
+                var color = cloudCreator.Object.RandomColor;
                 CollectionAssert.Contains(_loader.Object.Colors, color);
             }
         }
