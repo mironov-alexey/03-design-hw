@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace _03_design_hw
+namespace _03_design_hw.CloudGenerator
 {
     public interface ICloudData
     {

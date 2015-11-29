@@ -5,7 +5,7 @@ using Nuclex.Game.Packing;
 using _03_design_hw.Loaders;
 using Point = Microsoft.Xna.Framework.Point;
 
-namespace _03_design_hw
+namespace _03_design_hw.CloudGenerator
 {
     public class CloudData : ICloudData
     {
@@ -49,18 +49,18 @@ namespace _03_design_hw
             size = size < _minFontSize ? size + _minFontSize : size;
             return new Font(_fontName, size);
         }
-        public Point GetWordLocation(SizeF rectangleSize)
+        private Point GetWordLocation(SizeF rectangleSize)
         {
             Point rectangleLocation;
             _packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
             return rectangleLocation;
         }
-        public int GetNewWidth(SizeF rectangleSize, Point location)
+        private int GetNewWidth(SizeF rectangleSize, Point location)
         {
             return Math.Max(CurrentWidth, location.X + (int)rectangleSize.Width);
         }
 
-        public int GetNewHeight(SizeF rectangleSize, Point location)
+        private int GetNewHeight(SizeF rectangleSize, Point location)
         {
             return Math.Max(CurrentHeight, location.Y + (int)rectangleSize.Height);
         }
@@ -87,12 +87,5 @@ namespace _03_design_hw
                 yield return new Tag(word, location, font, color);
             }
         } 
-    }
-
-    public interface ICloudData
-    {
-        int Width{ get; }
-        int Height{ get; }
-        IEnumerable<Tag> GetTags();
     }
 }

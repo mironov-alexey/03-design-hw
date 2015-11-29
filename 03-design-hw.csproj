@@ -116,9 +116,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudData.cs" />
+    <Compile Include="CloudGenerator\CloudData.cs" />
     <Compile Include="CloudGenerator\ICloudGenerator.cs" />
     <Compile Include="CloudGenerator\SimpleCloudGenerator.cs" />
+    <Compile Include="CloudGenerator\ICloudData.cs" />
     <Compile Include="Loaders\BaseLoader.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Tests\CloudDataGeneratorShould.cs" />
