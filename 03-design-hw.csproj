@@ -37,10 +37,6 @@
       <HintPath>packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FakeItEasy, Version=1.25.3.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
-      <HintPath>packages\FakeItEasy.1.25.3\lib\net40\FakeItEasy.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
@@ -125,7 +121,7 @@
     <Compile Include="CloudGenerator\SimpleCloudGenerator.cs" />
     <Compile Include="Loaders\BaseLoader.cs" />
     <Compile Include="Tag.cs" />
-    <Compile Include="Tests\CloudGeneratorShould.cs" />
+    <Compile Include="Tests\CloudDataGeneratorShould.cs" />
     <Compile Include="Loaders\ILoader.cs" />
     <Compile Include="Savers\CloudSaver.cs" />
     <Compile Include="Options.cs" />
