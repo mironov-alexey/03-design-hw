@@ -15,96 +15,19 @@ namespace _03_design_hw
     public class SimpleCloudGenerator : ICloudGenerator
     {
         private const int MaxImageSize = 5000;
-        private RectanglePacker Packer{ get; }
-        private ILoader Loader { get; }
-        public Statistic Statistic{ get; }
-        public int CurrentWidth {get; set; }
-        public int CurrentHeight {get; set; }
-        public IEnumerable<Word> Words { get; }
-        public SimpleCloudGenerator(ILoader loader, Statistic statistic)
+        private readonly CloudDataGenerator _cloudData;
+        public SimpleCloudGenerator(CloudDataGenerator cloudData)
         {
-
-            Loader = loader;
-            Statistic = statistic;
-            MinCount = statistic.MinCount;
-            MaxCount = statistic.MaxCount;
-            MinFontSize = loader.MinFontSize;
-            MaxFontSize = loader.MaxFontSize;
-            Colors = loader.Colors;
-            FontName = loader.FontName;
-            BlackList = loader.BlackList;
-            Width = loader.Width;
-            Height = loader.Height;
-            Packer = new ArevaloRectanglePacker(int.MaxValue, int.MaxValue);
-            Words = statistic.WordsWithFrequency;
+            _cloudData = cloudData;
         }
-
-        private int Height{ get; }
-
-        private int Width{ get; }
-
-        private string FontName{ get; }
-
-        private HashSet<string> BlackList{ get; }
-
-        private Color[] Colors{ get; }
-
-        private int MaxFontSize{ get; }
-
-        private int MinFontSize{ get; }
-
-        private int MaxCount{ get; }
-
-        private int MinCount{ get; }
-
-        public Color RandomColor => Colors[Loader.Random.Next(Colors.Length - 1)];
-
-        public Font GetFont(Word word)
-        {
-            var size = MaxFontSize*(word.Frequency - MinCount)/(MaxCount - MinCount);
-            size = size < MinFontSize? size + MinFontSize : size;
-            return new Font(FontName, size);
-        }
-        public XnaPoint GetWordLocation(SizeF rectangleSize)
-        {
-            XnaPoint rectangleLocation;
-            Packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
-            return rectangleLocation;
-        }
-        public int GetNewWidth(SizeF rectangleSize, XnaPoint location)
-        {
-            return Math.Max(CurrentWidth, location.X + (int) rectangleSize.Width);
-        }
-
-        public int GetNewHeight(SizeF rectangleSize, XnaPoint location)
-        {
-            return Math.Max(CurrentHeight, location.Y + (int)rectangleSize.Height);
-        }
-
 
         public Image GeneratePreReleaseImage()
         {
             var img = new Bitmap(MaxImageSize, MaxImageSize);
             using (Graphics graphics = Graphics.FromImage(img))
             {
-                foreach (var word in Words)
-                {
-                    var font = GetFont(word);
-                    var rectangleSize = graphics.MeasureString(word.WordString, font);
-                    var location = GetWordLocation(rectangleSize);
-                    var prevWidth = CurrentWidth;
-                    var prevHeight = CurrentHeight;
-                    CurrentWidth = GetNewWidth(rectangleSize, location);
-                    CurrentHeight = GetNewHeight(rectangleSize, location);
-                    if (CurrentHeight > Height || CurrentWidth > Width)
-                    {
-                        CurrentHeight = prevHeight;
-                        CurrentWidth = prevWidth;
-                        return img;
-                    }
-                    var color = RandomColor;
-                    graphics.DrawString(word.WordString, font, new SolidBrush(color), location.X, location.Y);
-                }
+                foreach (var tag in _cloudData.GetTagsSequence())
+                    graphics.DrawString(tag.Word.WordString, tag.Font, new SolidBrush(tag.Color), tag.Location.X, tag.Location.Y);
                 return img;
             }
         }
@@ -113,7 +36,7 @@ namespace _03_design_hw
         {
             using (var preReleaseImage = GeneratePreReleaseImage())
             {
-                var releaseImage = new Bitmap(Width, Height);
+                var releaseImage = new Bitmap(_cloudData.Width, _cloudData.Height);
                 using (Graphics releaseGraphics = Graphics.FromImage(releaseImage))
                 {
                     releaseGraphics.Clear(Color.White);

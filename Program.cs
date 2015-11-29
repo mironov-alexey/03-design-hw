@@ -13,16 +13,13 @@ namespace _03_design_hw
     {
         static void Main(string[] args)
         {
-            Options options = new Options();
+            var options = new Options();
             Parser.Default.ParseArguments(args, options);
             var kernel = new StandardKernel();
             kernel.Bind<ILoader>().To<DictionaryLoader>().InSingletonScope().WithConstructorArgument(options.ConfigPath);
-            kernel.Bind<Statistic>().ToSelf().InSingletonScope().WithConstructorArgument("loader");
+            kernel.Bind<Statistic>().ToSelf().InSingletonScope();
             kernel.Bind<ICloudGenerator>().To<SimpleCloudGenerator>();
 
-            var statistic = kernel.Get<Statistic>(
-                    new ConstructorArgument("loader", kernel.Get<ILoader>())
-                );
             var cloudCreator = kernel.Get<ICloudGenerator>();
             using (var cloud = cloudCreator.GenerateCloudImage())
             {

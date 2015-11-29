@@ -120,15 +120,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudDataGenerator.cs" />
+    <Compile Include="CloudGenerator\ICloudGenerator.cs" />
+    <Compile Include="CloudGenerator\SimpleCloudGenerator.cs" />
     <Compile Include="Loaders\BaseLoader.cs" />
+    <Compile Include="Tag.cs" />
     <Compile Include="Tests\CloudGeneratorShould.cs" />
     <Compile Include="Loaders\ILoader.cs" />
     <Compile Include="Savers\CloudSaver.cs" />
-    <Compile Include="CloudCreator\ICloudGenerator.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CloudCreator\SimpleCloudGenerator.cs" />
     <Compile Include="Loaders\DictionaryLoader.cs" />
     <Compile Include="Savers\ICloudSaver.cs" />
     <Compile Include="Tests\StatisticShould.cs" />
