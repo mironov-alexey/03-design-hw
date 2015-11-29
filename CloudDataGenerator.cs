@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Nuclex.Game.Packing;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -15,14 +12,12 @@ namespace _03_design_hw
         {
 
             _loader = loader;
-            _statistic = statistic;
             MinCount = statistic.MinCount;
             MaxCount = statistic.MaxCount;
-            MinFontSize = loader.MinFontSize;
-            MaxFontSize = loader.MaxFontSize;
-            Colors = loader.Colors;
-            FontName = loader.FontName;
-            BlackList = loader.BlackList;
+            _minFontSize = loader.MinFontSize;
+            _maxFontSize = loader.MaxFontSize;
+            _colors = loader.Colors;
+            _fontName = loader.FontName;
             Width = loader.Width;
             Height = loader.Height;
             _packer = new ArevaloRectanglePacker(int.MaxValue, int.MaxValue);
@@ -30,33 +25,21 @@ namespace _03_design_hw
         }
         public IEnumerable<Word> Words { get; }
         private readonly RectanglePacker _packer;
-        private Statistic _statistic;
         private readonly ILoader _loader;
         public int Height { get; }
-
         public int Width { get; }
-
-        private string FontName { get; }
-
-        private HashSet<string> BlackList { get; }
-
-        private Color[] Colors { get; }
-
-        private int MaxFontSize { get; }
-
-        private int MinFontSize { get; }
-
+        private readonly string _fontName;
+        private readonly Color[] _colors;
+        private readonly int _maxFontSize;
+        private readonly int _minFontSize;
         private int MaxCount { get; }
-
         private int MinCount { get; }
-
-        public Color RandomColor => Colors[_loader.Random.Next(Colors.Length - 1)];
-
+        public Color RandomColor => _colors[_loader.Random.Next(_colors.Length - 1)];
         public Font GetFont(Word word)
         {
-            var size = MaxFontSize * (word.Frequency - MinCount) / (MaxCount - MinCount);
-            size = size < MinFontSize ? size + MinFontSize : size;
-            return new Font(FontName, size);
+            var size = _maxFontSize * (word.Frequency - MinCount) / (MaxCount - MinCount);
+            size = size < _minFontSize ? size + _minFontSize : size;
+            return new Font(_fontName, size);
         }
         public Point GetWordLocation(SizeF rectangleSize)
         {

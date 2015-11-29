@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Net.Configuration;
-using Microsoft.Xna.Framework;
-using Nuclex.Game.Packing;
+﻿using System.Drawing;
 using Color = System.Drawing.Color;
-using XnaPoint = Microsoft.Xna.Framework.Point;
 
 
 namespace _03_design_hw
