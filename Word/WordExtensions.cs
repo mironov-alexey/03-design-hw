@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 
-namespace _03_design_hw
+namespace _03_design_hw.Word
 {
     public static class WordExtensions
     {

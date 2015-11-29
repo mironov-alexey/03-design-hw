@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-namespace _03_design_hw
+using _03_design_hw.Loaders;
+
+namespace _03_design_hw.Tests
 {
     [TestFixture]
     public class StatisticShould
@@ -22,7 +24,7 @@ namespace _03_design_hw
         [Test]
         public void ReturnCorrectWordsCount()
         {
-            var statistic = new Statistic(_loader.Object);
+            var statistic = new Statistic.Statistic(_loader.Object);
             var words = statistic.WordsWithFrequency;
             Assert.AreEqual(3, words.Count);
         }
@@ -31,7 +33,7 @@ namespace _03_design_hw
         public void ReturnsCorrectWordCount_WithTopConstraint()
         {
             _loader.Setup(x => x.Top).Returns(2);
-            var statistic = new Statistic(_loader.Object);
+            var statistic = new Statistic.Statistic(_loader.Object);
             var words = statistic.WordsWithFrequency;
             Assert.AreEqual(2, words.Count);
         }
@@ -44,7 +46,7 @@ namespace _03_design_hw
             {
                 var inputWords = string.Join(" ", Enumerable.Range(0, i).Select(_ => "a")).Split().ToList();
                 _loader.Setup(x => x.Words).Returns(inputWords);
-                var statistic = new Statistic(_loader.Object);
+                var statistic = new Statistic.Statistic(_loader.Object);
                 results.Add(statistic.WordsWithFrequency[0].Frequency);
             }
             CollectionAssert.AreEqual(Enumerable.Range(1, size).ToList(), results);
@@ -52,13 +54,13 @@ namespace _03_design_hw
         [Test]
         public void CorrectlyCalculate_MinWordCount()
         {
-            var statistic = new Statistic(_loader.Object);
+            var statistic = new Statistic.Statistic(_loader.Object);
             Assert.AreEqual(1, statistic.MinCount);
         }
         [Test]
         public void CorrectlyCalculate_MaxWordCount()
         {
-            var statistic = new Statistic(_loader.Object);
+            var statistic = new Statistic.Statistic(_loader.Object);
             Assert.AreEqual(3, statistic.MaxCount);
         }
     }

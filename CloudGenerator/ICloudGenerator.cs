@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
-namespace _03_design_hw
+namespace _03_design_hw.CloudGenerator
 {
     interface ICloudGenerator
     {

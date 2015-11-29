@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace _03_design_hw
+namespace _03_design_hw.Loaders
 {
     public interface ILoader
     {

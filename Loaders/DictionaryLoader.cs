@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace _03_design_hw
+namespace _03_design_hw.Loaders
 {
     public class DictionaryLoader : BaseLoader
     {

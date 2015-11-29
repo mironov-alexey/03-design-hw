@@ -9,7 +9,7 @@ namespace _03_design_hw
 {
     public class Tag
     {
-        public Tag(Word word, Point location, SizeF size, Font font, Color color)
+        public Tag(Word.Word word, Point location, SizeF size, Font font, Color color)
         {
             Word = word;
             Location = location;
@@ -18,7 +18,7 @@ namespace _03_design_hw
             Font = font;
         }
 
-        public Word Word{ get; }
+        public Word.Word Word{ get; }
         public Point Location{ get; }
         public SizeF Size{ get; }
         public Color Color{ get; }

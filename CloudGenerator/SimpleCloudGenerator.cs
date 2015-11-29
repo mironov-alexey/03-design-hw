@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using _03_design_hw.CloudGenerator;
 using Color = System.Drawing.Color;
 
 

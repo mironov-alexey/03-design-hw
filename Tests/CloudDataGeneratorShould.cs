@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using _03_design_hw.Loaders;
 using Color = System.Drawing.Color;
 using XnaPoint = Microsoft.Xna.Framework.Point;
 
@@ -13,7 +14,7 @@ namespace _03_design_hw.Tests
     public class CloudDataGeneratorShould
     {
         private Mock<ILoader> _loader;
-        private Statistic _statistic;
+        private Statistic.Statistic _statistic;
         private CloudDataGenerator _dataGenerator;
 
         [SetUp]
@@ -30,7 +31,7 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.MinFontSize).Returns(10);
             _loader.Setup(x => x.Colors).Returns(new[] {Color.DarkRed, Color.Black, Color.Coral});
             _loader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c",});
-            _statistic = new Statistic(_loader.Object);
+            _statistic = new Statistic.Statistic(_loader.Object);
             _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
         }
 
@@ -104,12 +105,6 @@ namespace _03_design_hw.Tests
             CollectionAssert.AreEquivalent(
                 _statistic.WordsWithFrequency.Select(w => w.WordString),
                 _dataGenerator.GetTagsSequence().Select(t => t.Word.WordString));
-        }
-
-        [Test]
-        public void TestName()
-        {
-            
         }
     }
 }

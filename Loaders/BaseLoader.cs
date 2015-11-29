@@ -5,17 +5,17 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace _03_design_hw
+namespace _03_design_hw.Loaders
 {
     public abstract class BaseLoader : ILoader
     {
-        public string PathToConfig{ get; }
-
         protected BaseLoader(string pathToConfig)
         {
             PathToConfig = pathToConfig;
             Random = new Random();
         }
+        public string PathToConfig { get; }
+        public Random Random { get; }
         private JObject JsonConfig => JObject.Parse(File.ReadAllText(PathToConfig));
         public IEnumerable<string> Words =>
                 File.ReadLines(InputPath)
@@ -50,6 +50,5 @@ namespace _03_design_hw
         public int MaxFontSize => JsonConfig["fontSize"].Select(token => (int) token).ToArray()[1];
         public int Width => JsonConfig["size"].Select(token => (int)token).ToArray()[0];
         public int Height => JsonConfig["size"].Select(token => (int)token).ToArray()[1];
-        public Random Random { get; }
     }
 }

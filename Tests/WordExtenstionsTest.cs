@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
+using _03_design_hw.Word;
 
-namespace _03_design_hw
+namespace _03_design_hw.Tests
 {
     [TestFixture]
     public class WordExtenstionsTest
