@@ -17,7 +17,7 @@ namespace _03_design_hw.Tests
     {
         private Mock<ILoader> _loader;
         private Statistic.Statistic _statistic;
-        private CloudDataGenerator _dataGenerator;
+        private CloudData _dataGenerator;
 
         [SetUp]
         public void SetUp()
@@ -34,7 +34,7 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.Colors).Returns(new[] {Color.DarkRed, Color.Black, Color.Coral});
             _loader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
             _statistic = new Statistic.Statistic(_loader.Object);
-            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
+            _dataGenerator = new CloudData(_loader.Object, _statistic);
         }
 
         [Test]
@@ -75,9 +75,9 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
             _statistic = new Statistic.Statistic(_loader.Object);
-            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
+            _dataGenerator = new CloudData(_loader.Object, _statistic);
             var currentSize = new SizeF(_dataGenerator.CurrentWidth, _dataGenerator.CurrentHeight);
-            _dataGenerator.GetTagsSequence().Count();
+            _dataGenerator.GetTags().Count();
             var newSize = new SizeF(_dataGenerator.CurrentWidth, _dataGenerator.CurrentHeight);
             Assert.AreNotEqual(currentSize, newSize);
         }
@@ -98,8 +98,8 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
             _statistic = new Statistic.Statistic(_loader.Object);
-            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
-            var tagsCount = _dataGenerator.GetTagsSequence().Count();
+            _dataGenerator = new CloudData(_loader.Object, _statistic);
+            var tagsCount = _dataGenerator.GetTags().Count();
             Assert.AreEqual(_loader.Object.Words.Distinct().Count(), tagsCount);
         }
 
@@ -110,15 +110,15 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
             _statistic = new Statistic.Statistic(_loader.Object);
-            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
-            var tagsCount = _dataGenerator.GetTagsSequence().Count();
+            _dataGenerator = new CloudData(_loader.Object, _statistic);
+            var tagsCount = _dataGenerator.GetTags().Count();
             Assert.AreEqual(_loader.Object.Top, tagsCount);
         }
 
         [Test]
         public void GenerateOnlyOneTagForWord()
         {
-            CollectionAssert.AllItemsAreUnique(_dataGenerator.GetTagsSequence().Select(t => t.Word.WordString));
+            CollectionAssert.AllItemsAreUnique(_dataGenerator.GetTags().Select(t => t.Word.WordString));
         }
 
         [Test]
@@ -127,16 +127,16 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
             _statistic = new Statistic.Statistic(_loader.Object);
-            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
+            _dataGenerator = new CloudData(_loader.Object, _statistic);
             CollectionAssert.AreEquivalent(
                 _statistic.WordsWithFrequency.Select(w => w.WordString),
-                _dataGenerator.GetTagsSequence().Select(t => t.Word.WordString));
+                _dataGenerator.GetTags().Select(t => t.Word.WordString));
         }
 
         [Test]
         public void TrimDoesntFitTags()
         {
-            var tagsCount = _dataGenerator.GetTagsSequence().Count();
+            var tagsCount = _dataGenerator.GetTags().Count();
             Assert.Less(tagsCount, 3);
         }
     }

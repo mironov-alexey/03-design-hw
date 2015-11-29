@@ -23,6 +23,7 @@ namespace _03_design_hw
             kernel.Bind<ILoader>().To<DictionaryLoader>().InSingletonScope().WithConstructorArgument(options.ConfigPath);
             kernel.Bind<Statistic.Statistic>().ToSelf().InSingletonScope();
             kernel.Bind<ICloudGenerator>().To<SimpleCloudGenerator>();
+            kernel.Bind<ICloudData>().To<CloudData>();
 
             var cloudCreator = kernel.Get<ICloudGenerator>();
             using (var cloud = cloudCreator.GenerateCloudImage())

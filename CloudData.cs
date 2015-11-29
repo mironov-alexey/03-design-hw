@@ -7,9 +7,9 @@ using Point = Microsoft.Xna.Framework.Point;
 
 namespace _03_design_hw
 {
-    public class CloudDataGenerator
+    public class CloudData : ICloudData
     {
-        public CloudDataGenerator(ILoader loader, Statistic.Statistic statistic)
+        public CloudData(ILoader loader, Statistic.Statistic statistic)
         {
             MinCount = statistic.MinCount;
             MaxCount = statistic.MaxCount;
@@ -66,7 +66,7 @@ namespace _03_design_hw
         }
 
         
-        public IEnumerable<Tag> GetTagsSequence()
+        public IEnumerable<Tag> GetTags()
         {
             foreach (var word in Words)
             {
@@ -87,5 +87,12 @@ namespace _03_design_hw
                 yield return new Tag(word, location, font, color);
             }
         } 
+    }
+
+    public interface ICloudData
+    {
+        int Width{ get; }
+        int Height{ get; }
+        IEnumerable<Tag> GetTags();
     }
 }

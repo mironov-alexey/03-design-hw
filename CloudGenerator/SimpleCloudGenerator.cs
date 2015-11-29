@@ -8,10 +8,10 @@ namespace _03_design_hw
     public class SimpleCloudGenerator : ICloudGenerator
     {
         private const int MaxImageSize = 5000;
-        private readonly CloudDataGenerator _cloudData;
-        public SimpleCloudGenerator(CloudDataGenerator cloudData)
+        private readonly ICloudData _tags;
+        public SimpleCloudGenerator(ICloudData tags)
         {
-            _cloudData = cloudData;
+            _tags = tags;
         }
 
         public Image GeneratePreReleaseImage()
@@ -19,7 +19,7 @@ namespace _03_design_hw
             var img = new Bitmap(MaxImageSize, MaxImageSize);
             using (Graphics graphics = Graphics.FromImage(img))
             {
-                foreach (var tag in _cloudData.GetTagsSequence())
+                foreach (var tag in _tags.GetTags())
                     graphics.DrawString(tag.Word.WordString, tag.Font, new SolidBrush(tag.Color), tag.Location.X, tag.Location.Y);
                 return img;
             }
@@ -29,7 +29,7 @@ namespace _03_design_hw
         {
             using (var preReleaseImage = GeneratePreReleaseImage())
             {
-                var releaseImage = new Bitmap(_cloudData.Width, _cloudData.Height);
+                var releaseImage = new Bitmap(_tags.Width, _tags.Height);
                 using (Graphics releaseGraphics = Graphics.FromImage(releaseImage))
                 {
                     releaseGraphics.Clear(Color.White);

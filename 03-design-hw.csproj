@@ -116,7 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudDataGenerator.cs" />
+    <Compile Include="CloudData.cs" />
     <Compile Include="CloudGenerator\ICloudGenerator.cs" />
     <Compile Include="CloudGenerator\SimpleCloudGenerator.cs" />
     <Compile Include="Loaders\BaseLoader.cs" />
