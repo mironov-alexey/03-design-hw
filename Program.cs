@@ -9,6 +9,7 @@ using Ninject.Parameters;
 using _03_design_hw.CloudGenerator;
 using _03_design_hw.Loaders;
 using _03_design_hw.Savers;
+using _03_design_hw.Tests;
 
 namespace _03_design_hw
 {

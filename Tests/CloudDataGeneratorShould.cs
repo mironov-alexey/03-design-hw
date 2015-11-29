@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
 using _03_design_hw.Loaders;
+using _03_design_hw.Savers;
 using Color = System.Drawing.Color;
 using XnaPoint = Microsoft.Xna.Framework.Point;
 
@@ -23,14 +25,14 @@ namespace _03_design_hw.Tests
             _loader = new Mock<ILoader>();
             _loader.Setup(x => x.BlackList).Returns(new HashSet<string>());
             _loader.Setup(x => x.Top).Returns(3);
-            _loader.Setup(x => x.Width).Returns(1024);
-            _loader.Setup(x => x.Height).Returns(1024);
+            _loader.Setup(x => x.Width).Returns(30);
+            _loader.Setup(x => x.Height).Returns(30);
             _loader.Setup(x => x.Random).Returns(new Random());
             _loader.Setup(x => x.FontName).Returns("Arial");
             _loader.Setup(x => x.MaxFontSize).Returns(20);
             _loader.Setup(x => x.MinFontSize).Returns(10);
             _loader.Setup(x => x.Colors).Returns(new[] {Color.DarkRed, Color.Black, Color.Coral});
-            _loader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c",});
+            _loader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
             _statistic = new Statistic.Statistic(_loader.Object);
             _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
         }
@@ -70,6 +72,10 @@ namespace _03_design_hw.Tests
         [Test]
         public void UpdateSize()
         {
+            _loader.Setup(x => x.Width).Returns(200);
+            _loader.Setup(x => x.Height).Returns(200);
+            _statistic = new Statistic.Statistic(_loader.Object);
+            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
             var currentSize = new SizeF(_dataGenerator.CurrentWidth, _dataGenerator.CurrentHeight);
             _dataGenerator.GetTagsSequence().Count();
             var newSize = new SizeF(_dataGenerator.CurrentWidth, _dataGenerator.CurrentHeight);
@@ -89,8 +95,24 @@ namespace _03_design_hw.Tests
         [Test]
         public void Correctly_GetTagsCount()
         {
+            _loader.Setup(x => x.Width).Returns(200);
+            _loader.Setup(x => x.Height).Returns(200);
+            _statistic = new Statistic.Statistic(_loader.Object);
+            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
             var tagsCount = _dataGenerator.GetTagsSequence().Count();
             Assert.AreEqual(_loader.Object.Words.Distinct().Count(), tagsCount);
+        }
+
+        [Test]
+        public void Correctly_GetTopTags()
+        {
+            _loader.Setup(x => x.Top).Returns(2);
+            _loader.Setup(x => x.Width).Returns(200);
+            _loader.Setup(x => x.Height).Returns(200);
+            _statistic = new Statistic.Statistic(_loader.Object);
+            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
+            var tagsCount = _dataGenerator.GetTagsSequence().Count();
+            Assert.AreEqual(_loader.Object.Top, tagsCount);
         }
 
         [Test]
@@ -102,9 +124,20 @@ namespace _03_design_hw.Tests
         [Test]
         public void Correctly_GetWordInTags()
         {
+            _loader.Setup(x => x.Width).Returns(200);
+            _loader.Setup(x => x.Height).Returns(200);
+            _statistic = new Statistic.Statistic(_loader.Object);
+            _dataGenerator = new CloudDataGenerator(_loader.Object, _statistic);
             CollectionAssert.AreEquivalent(
                 _statistic.WordsWithFrequency.Select(w => w.WordString),
                 _dataGenerator.GetTagsSequence().Select(t => t.Word.WordString));
+        }
+
+        [Test]
+        public void TrimDoesntFitTags()
+        {
+            var tagsCount = _dataGenerator.GetTagsSequence().Count();
+            Assert.Less(tagsCount, 3);
         }
     }
 }

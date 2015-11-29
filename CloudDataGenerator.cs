@@ -84,7 +84,7 @@ namespace _03_design_hw
                     CurrentWidth = prevWidth;
                     yield break;
                 }
-                yield return new Tag(word, location, rectangleSize, font, color);
+                yield return new Tag(word, location, font, color);
             }
         } 
     }
