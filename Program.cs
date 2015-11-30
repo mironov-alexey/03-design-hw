@@ -24,6 +24,8 @@ namespace _03_design_hw
                 var cloudSaver = kernel.Get<CloudSaver>();
                 cloudSaver.Save(cloud);
             }
+            // TODO: как-нибудь вынести метод GetWordLocation в отдельный класс (e.g. Algorithm)
+            // TODO: + интерфейс IAlgorithm ? Для поддержки разных алгоритмов расположения прямоугольников на плоскости
         }
     }
 }
