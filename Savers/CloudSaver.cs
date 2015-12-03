@@ -1,20 +1,19 @@
 ﻿using System.Drawing;
-using _03_design_hw.Loaders;
 
 namespace _03_design_hw.Savers
 {
     public class CloudSaver : ICloudSaver
     {
-        private ILoader Loader { get; }
+        private readonly string _outputPath;
 
-        public CloudSaver(ILoader loader)
+        public CloudSaver(Options settings)
         {
-            Loader = loader;
+            _outputPath = settings.OutputPath;
         }
 
         public void Save(Image image)
         {
-            image.Save(Loader.OutputPath); // тут можно будет ещё вставить формат, в котором сохраняется картинка
+            image.Save(_outputPath); // тут можно будет ещё вставить формат, в котором сохраняется картинка
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
-using _03_design_hw.CloudGenerator;
 using Color = System.Drawing.Color;
 
 
-namespace _03_design_hw
+namespace _03_design_hw.CloudGenerator
 {
     public class SimpleCloudGenerator : ICloudGenerator
     {

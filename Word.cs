@@ -1,4 +1,4 @@
-﻿namespace _03_design_hw.Word
+﻿namespace _03_design_hw
 {
     public class Word
     {

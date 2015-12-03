@@ -6,10 +6,8 @@ namespace _03_design_hw.Loaders
 {
     public interface ILoader
     {
-        string PathToConfig{ get; }
-        string OutputPath{ get; }
         string FontName{ get; }
-        int Top{ get; }
+        int TagsCount{ get; }
         int MinFontSize { get; }
         int MaxFontSize{ get; }
         int Width{ get; }
@@ -17,7 +15,5 @@ namespace _03_design_hw.Loaders
         Random Random{ get; }
         Dictionary<string, string> SpellingDictionaries{ get; }
         Color[] Colors{ get; }
-        HashSet<string> BlackList{ get; } 
-        IEnumerable<string> Words{ get; } 
     }
 }

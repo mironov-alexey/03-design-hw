@@ -4,10 +4,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using Moq;
+using Nuclex.Game.Packing;
 using NUnit.Framework;
 using _03_design_hw.CloudGenerator;
 using _03_design_hw.Loaders;
 using _03_design_hw.Savers;
+using _03_design_hw.Statistics;
 using Color = System.Drawing.Color;
 using XnaPoint = Microsoft.Xna.Framework.Point;
 
@@ -17,15 +19,19 @@ namespace _03_design_hw.Tests
     public class CloudDataGeneratorShould
     {
         private Mock<ILoader> _loader;
-        private Statistic.Statistic _statistic;
+        private Mock<IWordsLoader> _wordsLoader;
+        private Mock<IBlackListLoader> _blackListLoader;
+        private Statistic _statistic;
         private CloudData _data;
 
         [SetUp]
         public void SetUp()
         {
             _loader = new Mock<ILoader>();
-            _loader.Setup(x => x.BlackList).Returns(new HashSet<string>());
-            _loader.Setup(x => x.Top).Returns(3);
+            _wordsLoader = new Mock<IWordsLoader>();
+            _blackListLoader = new Mock<IBlackListLoader>();
+            _blackListLoader.Setup(x => x.BlackList).Returns(new HashSet<string>());
+            _loader.Setup(x => x.TagsCount).Returns(3);
             _loader.Setup(x => x.Width).Returns(30);
             _loader.Setup(x => x.Height).Returns(30);
             _loader.Setup(x => x.Random).Returns(new Random());
@@ -33,9 +39,9 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.MaxFontSize).Returns(20);
             _loader.Setup(x => x.MinFontSize).Returns(10);
             _loader.Setup(x => x.Colors).Returns(new[] {Color.DarkRed, Color.Black, Color.Coral});
-            _loader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
-            _statistic = new Statistic.Statistic(_loader.Object);
-            _data = new CloudData(_loader.Object, _statistic);
+            _wordsLoader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
+            _statistic = new StatisticCalculator(_loader.Object, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
+            _data = new CloudData(_loader.Object, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
         }
 
         [Test]
@@ -59,8 +65,8 @@ namespace _03_design_hw.Tests
         {
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
-            _statistic = new Statistic.Statistic(_loader.Object);
-            _data = new CloudData(_loader.Object, _statistic);
+            _statistic = new StatisticCalculator(_loader.Object, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
+            _data = new CloudData(_loader.Object, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
             var currentSize = new SizeF(_data.CurrentWidth, _data.CurrentHeight);
             _data.GetTags().Count();
             var newSize = new SizeF(_data.CurrentWidth, _data.CurrentHeight);
@@ -82,22 +88,22 @@ namespace _03_design_hw.Tests
         {
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
-            _statistic = new Statistic.Statistic(_loader.Object);
-            _data = new CloudData(_loader.Object, _statistic);
+            _statistic = new StatisticCalculator(_loader.Object, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
+            _data = new CloudData(_loader.Object, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
             var tagsCount = _data.GetTags().Count();
-            Assert.AreEqual(_loader.Object.Words.Distinct().Count(), tagsCount);
+            Assert.AreEqual(_wordsLoader.Object.Words.Distinct().Count(), tagsCount);
         }
 
         [Test]
         public void Correctly_GetTopTags()
         {
-            _loader.Setup(x => x.Top).Returns(2);
+            _loader.Setup(x => x.TagsCount).Returns(2);
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
-            _statistic = new Statistic.Statistic(_loader.Object);
-            _data = new CloudData(_loader.Object, _statistic);
+            _statistic = new StatisticCalculator(_loader.Object, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
+            _data = new CloudData(_loader.Object, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
             var tagsCount = _data.GetTags().Count();
-            Assert.AreEqual(_loader.Object.Top, tagsCount);
+            Assert.AreEqual(_loader.Object.TagsCount, tagsCount);
         }
 
         [Test]
@@ -111,8 +117,8 @@ namespace _03_design_hw.Tests
         {
             _loader.Setup(x => x.Width).Returns(200);
             _loader.Setup(x => x.Height).Returns(200);
-            _statistic = new Statistic.Statistic(_loader.Object);
-            _data = new CloudData(_loader.Object, _statistic);
+            _statistic = new StatisticCalculator(_loader.Object, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
+            _data = new CloudData(_loader.Object, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
             CollectionAssert.AreEquivalent(
                 _statistic.WordsWithFrequency.Select(w => w.WordString),
                 _data.GetTags().Select(t => t.Word.WordString));

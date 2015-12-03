@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Lucene.Net.Index;
 using NUnit.Framework;
-using _03_design_hw.Word;
 
 namespace _03_design_hw.Tests
 {
@@ -13,7 +13,8 @@ namespace _03_design_hw.Tests
         {
             var words = new List<string> {"a", "b", "c", "d", "e", "d", "e", "d", "e", "b", "c", "b", "c", "a", "b", "f"};
             var bannedWords = new HashSet<string> {"b", "c", "d"};
-            CollectionAssert.AreEquivalent(new List<string> {"a", "e", "e", "e", "a", "f"}, words.FilterBannedWords(bannedWords));
+            var filteredWords = words.FilterBannedWords(bannedWords);
+            CollectionAssert.AreEquivalent(new List<string> {"a", "e", "e", "e", "a", "f"}, filteredWords);
         }
     }
 }

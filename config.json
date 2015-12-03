@@ -1,10 +1,7 @@
 ﻿{
-  "words": "./words.txt",
-  "output": "./output.png",
   "dictionaries": [
     [ "./en_US.aff", "./en_US.dic" ]
   ],
-  "blacklist": "./blacklist.txt",
   "colors": [
     "Red",
     "Green",
@@ -19,7 +16,7 @@
     "DarkTurquoise",
     "#a9a9a9"
   ],
-  "top": 80,
+  "tagsCount": 80,
   "fontSize": [ 30, 120 ],
   "fontName": "Times New Roman",
   "size" :  [1280, 1024]

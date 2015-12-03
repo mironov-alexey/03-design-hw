@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _03_design_hw.Word
+namespace _03_design_hw
 {
     public static class WordExtensions
     {

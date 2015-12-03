@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using Nuclex.Game.Packing;
 using _03_design_hw.Loaders;
+using _03_design_hw.Statistics;
 using Point = Microsoft.Xna.Framework.Point;
 
 namespace _03_design_hw.CloudGenerator
 {
     public class CloudData : ICloudData
     {
-        public CloudData(ILoader loader, Statistic.Statistic statistic)
+        public CloudData(ILoader loader, Statistic statistic, RectanglePacker packer)
         {
-            MinCount = statistic.MinCount;
-            MaxCount = statistic.MaxCount;
+            _minCount = statistic.MinCount;
+            _maxCount = statistic.MaxCount;
             Width = loader.Width;
             Height = loader.Height;
             Words = statistic.WordsWithFrequency;
@@ -21,50 +22,62 @@ namespace _03_design_hw.CloudGenerator
             _maxFontSize = loader.MaxFontSize;
             _colors = loader.Colors;
             _fontName = loader.FontName;
-            _packer = new ArevaloRectanglePacker(int.MaxValue, int.MaxValue);
+            _packer = packer;
         }
-        public IEnumerable<Word.Word> Words { get; }
+
+        public IEnumerable<Word> Words { get; }
+
         public int Height { get; }
+
         public int Width { get; }
+
         public int CurrentWidth { get; set; }
+
         public int CurrentHeight { get; set; }
+
         public Color RandomColor => _colors[_loader.Random.Next(_colors.Length - 1)];
+
         private readonly RectanglePacker _packer;
+
         private readonly ILoader _loader;
+
         private readonly string _fontName;
+
         private readonly Color[] _colors;
+
         private readonly int _maxFontSize;
+
         private readonly int _minFontSize;
-        private int MaxCount { get; }
-        private int MinCount { get; }
-        private SizeF GetTagSize(Word.Word word, Font font)
+
+        private readonly int _maxCount;
+
+        private readonly int _minCount;
+
+        private SizeF GetTagSize(Word word, Font font)
         {
             using (Image img = new Bitmap(1, 1))
             using (Graphics g = Graphics.FromImage(img))
                 return g.MeasureString(word.WordString, font);
         }
-        public Font GetFont(Word.Word word)
+
+        public Font GetFont(Word word)
         {
-            var size = _maxFontSize * (word.Frequency - MinCount) / (MaxCount - MinCount);
+            var size = _maxFontSize * (word.Frequency - _minCount) / (_maxCount - _minCount);
             size = size < _minFontSize ? size + _minFontSize : size;
             return new Font(_fontName, size);
         }
+
         private Point GetWordLocation(SizeF rectangleSize)
         {
             Point rectangleLocation;
             _packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
             return rectangleLocation;
         }
-        private int GetNewWidth(SizeF rectangleSize, Point location)
-        {
-            return Math.Max(CurrentWidth, location.X + (int)rectangleSize.Width);
-        }
+        private int GetNewWidth(SizeF rectangleSize, Point location) =>
+            Math.Max(CurrentWidth, location.X + (int)rectangleSize.Width);
 
-        private int GetNewHeight(SizeF rectangleSize, Point location)
-        {
-            return Math.Max(CurrentHeight, location.Y + (int)rectangleSize.Height);
-        }
-
+        private int GetNewHeight(SizeF rectangleSize, Point location) =>
+            Math.Max(CurrentHeight, location.Y + (int)rectangleSize.Height);
         
         public IEnumerable<Tag> GetTags()
         {

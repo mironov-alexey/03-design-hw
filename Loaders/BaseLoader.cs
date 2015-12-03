@@ -7,27 +7,19 @@ using Newtonsoft.Json.Linq;
 
 namespace _03_design_hw.Loaders
 {
-    public abstract class BaseLoader : ILoader
+    public class BaseLoader : ILoader
     {
-        protected BaseLoader(string pathToConfig)
+        public BaseLoader(Options options)
         {
-            PathToConfig = pathToConfig;
+            _pathToConfig = options.ConfigPath;
             Random = new Random();
         }
-        public string PathToConfig { get; }
+
+        private readonly string _pathToConfig;
+
         public Random Random { get; }
-        private JObject JsonConfig => JObject.Parse(File.ReadAllText(PathToConfig));
-        public IEnumerable<string> Words =>
-                File.ReadLines(InputPath)
-                .Where(s => !string.IsNullOrEmpty(s))
-                .Select(x => x.Trim());
-        public string InputPath => JsonConfig["words"].ToString();
-        private string PathToBlackList => JsonConfig["blacklist"].ToString();
-        public HashSet<string> BlackList => 
-            new HashSet<string>(
-                File.ReadLines(PathToBlackList)
-                .Where(s => !string.IsNullOrEmpty(s))
-                .Select(x => x.Trim()));
+
+        private JObject JsonConfig => JObject.Parse(File.ReadAllText(_pathToConfig));
 
         public Color[] Colors => 
             JsonConfig["colors"]
@@ -36,8 +28,6 @@ namespace _03_design_hw.Loaders
             .Select(ColorTranslator.FromHtml)
             .ToArray();
 
-        public string OutputPath => JsonConfig["output"].ToString();
-
         public Dictionary<string, string> SpellingDictionaries => 
             JsonConfig["dictionaries"]
             .ToDictionary(
@@ -45,10 +35,15 @@ namespace _03_design_hw.Loaders
             token => token[1].ToString());
 
         public string FontName => JsonConfig["fontName"].ToString();
-        public int Top => (int) JsonConfig["top"];
+
+        public int TagsCount => (int) JsonConfig["tagsCount"];
+
         public int MinFontSize => JsonConfig["fontSize"].Select(token => (int)token).ToArray()[0];
+
         public int MaxFontSize => JsonConfig["fontSize"].Select(token => (int) token).ToArray()[1];
+
         public int Width => JsonConfig["size"].Select(token => (int)token).ToArray()[0];
+
         public int Height => JsonConfig["size"].Select(token => (int)token).ToArray()[1];
     }
 }
