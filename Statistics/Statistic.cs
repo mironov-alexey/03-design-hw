@@ -8,10 +8,12 @@ namespace _03_design_hw.Statistics
         public Statistic(List<Word> words)
         {
             WordsWithFrequency = words;
+            MaxCount = WordsWithFrequency.Max(w => w.Frequency);
+            MinCount = WordsWithFrequency.Min(w => w.Frequency);
         }
 
-        public int MaxCount => WordsWithFrequency.Max(w => w.Frequency);
-        public int MinCount => WordsWithFrequency.Min(w => w.Frequency);
+        public int MaxCount{ get; }
+        public int MinCount{ get; }
 
         public List<Word> WordsWithFrequency{ get; }
     }

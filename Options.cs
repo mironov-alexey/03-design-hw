@@ -7,7 +7,7 @@ namespace _03_design_hw
     {
         [Option('c', "config", DefaultValue = "config.json",
             HelpText = "Path to config file.")]
-        public string ConfigPath{ get; set; }
+        public string PathToConfig{ get; set; }
 
         [Option('w', "words", DefaultValue = "words.txt",
             HelpText = "Path to words file.")]

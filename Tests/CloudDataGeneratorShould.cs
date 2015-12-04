@@ -34,7 +34,6 @@ namespace _03_design_hw.Tests
             _loader.Setup(x => x.TagsCount).Returns(3);
             _loader.Setup(x => x.Width).Returns(30);
             _loader.Setup(x => x.Height).Returns(30);
-            _loader.Setup(x => x.Random).Returns(new Random());
             _loader.Setup(x => x.FontName).Returns("Arial");
             _loader.Setup(x => x.MaxFontSize).Returns(20);
             _loader.Setup(x => x.MinFontSize).Returns(10);

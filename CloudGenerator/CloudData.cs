@@ -23,8 +23,11 @@ namespace _03_design_hw.CloudGenerator
             _colors = loader.Colors;
             _fontName = loader.FontName;
             _packer = packer;
+            _random = new Random();
         }
 
+        private readonly Random _random;
+        
         public IEnumerable<Word> Words { get; }
 
         public int Height { get; }
@@ -35,7 +38,7 @@ namespace _03_design_hw.CloudGenerator
 
         public int CurrentHeight { get; set; }
 
-        public Color RandomColor => _colors[_loader.Random.Next(_colors.Length - 1)];
+        public Color RandomColor => _colors[_random.Next(_colors.Length - 1)];
 
         private readonly RectanglePacker _packer;
 

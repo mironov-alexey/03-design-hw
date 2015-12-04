@@ -12,7 +12,6 @@ namespace _03_design_hw.Loaders
         int MaxFontSize{ get; }
         int Width{ get; }
         int Height{ get; }
-        Random Random{ get; }
         Dictionary<string, string> SpellingDictionaries{ get; }
         Color[] Colors{ get; }
     }

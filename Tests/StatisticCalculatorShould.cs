@@ -23,7 +23,6 @@ namespace _03_design_hw.Tests
             _blackListLoader = new Mock<IBlackListLoader>();
             _blackListLoader.Setup(x => x.BlackList).Returns(new HashSet<string>());
             _loader.Setup(x => x.TagsCount).Returns(3);
-            _loader.Setup(x => x.Random).Returns(new Random());
             _wordsLoader.Setup(x => x.Words).Returns(new List<string> { "a", "b", "b", "c", "c", "c", });
         }
         [Test]

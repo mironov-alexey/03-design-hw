@@ -123,8 +123,9 @@
     <Compile Include="Loaders\IWordsLoader.cs" />
     <Compile Include="Loaders\WordsLoader.cs" />
     <Compile Include="Loaders\BaseLoader.cs" />
+    <Compile Include="Statistics\IStatisticCalculator.cs" />
     <Compile Include="Statistics\StatisticCalculator.cs" />
-    <Compile Include="Tag.cs" />
+    <Compile Include="CloudGenerator\Tag.cs" />
     <Compile Include="Loaders\BlackListLoader.cs" />
     <Compile Include="Tests\CloudDataGeneratorShould.cs" />
     <Compile Include="Loaders\ILoader.cs" />
@@ -135,9 +136,9 @@
     <Compile Include="Savers\ICloudSaver.cs" />
     <Compile Include="Loaders\IBlackListLoader.cs" />
     <Compile Include="Tests\StatisticCalculatorShould.cs" />
-    <Compile Include="WordExtensions.cs" />
+    <Compile Include="CloudGenerator\WordExtensions.cs" />
     <Compile Include="Statistics\Statistic.cs" />
-    <Compile Include="Word.cs" />
+    <Compile Include="CloudGenerator\Word.cs" />
     <Compile Include="Tests\WordExtenstionsTest.cs" />
   </ItemGroup>
   <ItemGroup>

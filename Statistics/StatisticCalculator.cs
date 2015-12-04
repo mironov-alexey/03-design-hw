@@ -5,27 +5,27 @@ using _03_design_hw.Loaders;
 
 namespace _03_design_hw.Statistics
 {
-    public class StatisticCalculator
+    public class StatisticCalculator : IStatisticCalculator
     {
         public StatisticCalculator(ILoader configLoader, IBlackListLoader blackListLoader)
         {
-            Random = configLoader.Random;
-            BlackList = blackListLoader.BlackList;
-            Top = configLoader.TagsCount;
+            _random = new Random();
+            _blackList = blackListLoader.BlackList;
+            _top = configLoader.TagsCount;
         }
 
-        private Random Random{ get; }
-        private int Top{ get; }
-        private HashSet<string> BlackList{ get; }
+        private readonly Random _random;
+        private readonly int _top;
+        private readonly HashSet<string> _blackList;
 
         public Statistic Calculate(IEnumerable<string> words)
         {
             var wordsWithFreq = words
-                .FilterBannedWords(BlackList)
+                .FilterBannedWords(_blackList)
                 .GroupBy(w => w)
                 .OrderByDescending(g => g.Count())
-                .Take(Top)
-                .OrderByDescending(g => Random.Next())
+                .Take(_top)
+                .OrderByDescending(g => _random.Next())
                 .Select(g => new Word(g.First(), g.Count()))
                 .ToList();
             return new Statistic(wordsWithFreq);
