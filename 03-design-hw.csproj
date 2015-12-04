@@ -117,18 +117,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudGenerator\CloudData.cs" />
+    <Compile Include="CloudGenerator\FontCreator.cs" />
     <Compile Include="CloudGenerator\ICloudGenerator.cs" />
+    <Compile Include="CloudGenerator\IFontCreator.cs" />
     <Compile Include="CloudGenerator\SimpleCloudGenerator.cs" />
     <Compile Include="CloudGenerator\ICloudData.cs" />
     <Compile Include="Loaders\IWordsLoader.cs" />
+    <Compile Include="Loaders\Settings.cs" />
+    <Compile Include="Loaders\WordsListLoader.cs" />
     <Compile Include="Loaders\WordsLoader.cs" />
-    <Compile Include="Loaders\BaseLoader.cs" />
+    <Compile Include="Loaders\BaseSettingsLoader.cs" />
     <Compile Include="Statistics\IStatisticCalculator.cs" />
     <Compile Include="Statistics\StatisticCalculator.cs" />
     <Compile Include="CloudGenerator\Tag.cs" />
     <Compile Include="Loaders\BlackListLoader.cs" />
+    <Compile Include="Tests\BlackListLoaderShould.cs" />
     <Compile Include="Tests\CloudDataGeneratorShould.cs" />
-    <Compile Include="Loaders\ILoader.cs" />
+    <Compile Include="Loaders\ISettingsLoader.cs" />
     <Compile Include="Savers\CloudSaver.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
@@ -140,6 +145,7 @@
     <Compile Include="Statistics\Statistic.cs" />
     <Compile Include="CloudGenerator\Word.cs" />
     <Compile Include="Tests\WordExtenstionsTest.cs" />
+    <Compile Include="Tests\WordsListLoader_Should.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

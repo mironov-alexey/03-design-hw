@@ -2,7 +2,7 @@
 
 namespace _03_design_hw.CloudGenerator
 {
-    interface ICloudGenerator
+    internal interface ICloudGenerator
     {
         Image GenerateCloudImage();
     }

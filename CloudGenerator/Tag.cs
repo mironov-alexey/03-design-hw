@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Point = Microsoft.Xna.Framework.Point;
+
 namespace _03_design_hw
 {
     public class Tag

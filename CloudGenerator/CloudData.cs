@@ -10,83 +10,42 @@ namespace _03_design_hw.CloudGenerator
 {
     public class CloudData : ICloudData
     {
-        public CloudData(ILoader loader, Statistic statistic, RectanglePacker packer)
-        {
-            _minCount = statistic.MinCount;
-            _maxCount = statistic.MaxCount;
-            Width = loader.Width;
-            Height = loader.Height;
-            Words = statistic.WordsWithFrequency;
-            _loader = loader;
-            _minFontSize = loader.MinFontSize;
-            _maxFontSize = loader.MaxFontSize;
-            _colors = loader.Colors;
-            _fontName = loader.FontName;
-            _packer = packer;
-            _random = new Random();
-        }
-
-        private readonly Random _random;
-        
-        public IEnumerable<Word> Words { get; }
-
-        public int Height { get; }
-
-        public int Width { get; }
-
-        public int CurrentWidth { get; set; }
-
-        public int CurrentHeight { get; set; }
-
-        public Color RandomColor => _colors[_random.Next(_colors.Length - 1)];
+        private readonly Color[] _colors;
+        private readonly IFontCreator _fontCreator;
 
         private readonly RectanglePacker _packer;
 
-        private readonly ILoader _loader;
+        private readonly Random _random;
 
-        private readonly string _fontName;
+        private readonly Settings _settings;
 
-        private readonly Color[] _colors;
+        private readonly Statistic _statistic;
 
-        private readonly int _maxFontSize;
+        private readonly IEnumerable<Word> _words;
 
-        private readonly int _minFontSize;
-
-        private readonly int _maxCount;
-
-        private readonly int _minCount;
-
-        private SizeF GetTagSize(Word word, Font font)
+        public CloudData(Settings settings, Statistic statistic, RectanglePacker packer, IFontCreator fontCreator)
         {
-            using (Image img = new Bitmap(1, 1))
-            using (Graphics g = Graphics.FromImage(img))
-                return g.MeasureString(word.WordString, font);
+            _words = statistic.WordsWithFrequency;
+            _settings = settings;
+            _statistic = statistic;
+            _colors = settings.Colors;
+            _packer = packer;
+            _fontCreator = fontCreator;
+            _random = new Random();
         }
 
-        public Font GetFont(Word word)
-        {
-            var size = _maxFontSize * (word.Frequency - _minCount) / (_maxCount - _minCount);
-            size = size < _minFontSize ? size + _minFontSize : size;
-            return new Font(_fontName, size);
-        }
 
-        private Point GetWordLocation(SizeF rectangleSize)
-        {
-            Point rectangleLocation;
-            _packer.TryPack((int)rectangleSize.Width, (int)rectangleSize.Height, out rectangleLocation);
-            return rectangleLocation;
-        }
-        private int GetNewWidth(SizeF rectangleSize, Point location) =>
-            Math.Max(CurrentWidth, location.X + (int)rectangleSize.Width);
+        public int CurrentWidth{ get; private set; }
 
-        private int GetNewHeight(SizeF rectangleSize, Point location) =>
-            Math.Max(CurrentHeight, location.Y + (int)rectangleSize.Height);
-        
+        public int CurrentHeight{ get; private set; }
+
+        private Color RandomColor => _colors[_random.Next(_colors.Length - 1)];
+
         public IEnumerable<Tag> GetTags()
         {
-            foreach (var word in Words)
+            foreach (var word in _words)
             {
-                var font = GetFont(word);
+                var font = _fontCreator.GetFont(_settings, _statistic, word);
                 var rectangleSize = GetTagSize(word, font);
                 var location = GetWordLocation(rectangleSize);
                 var prevWidth = CurrentWidth;
@@ -94,7 +53,7 @@ namespace _03_design_hw.CloudGenerator
                 var color = RandomColor;
                 CurrentWidth = GetNewWidth(rectangleSize, location);
                 CurrentHeight = GetNewHeight(rectangleSize, location);
-                if (CurrentHeight > Height || CurrentWidth > Width)
+                if (CurrentHeight > _settings.Height || CurrentWidth > _settings.Width)
                 {
                     CurrentHeight = prevHeight;
                     CurrentWidth = prevWidth;
@@ -102,6 +61,26 @@ namespace _03_design_hw.CloudGenerator
                 }
                 yield return new Tag(word, location, font, color);
             }
-        } 
+        }
+
+        private SizeF GetTagSize(Word word, Font font)
+        {
+            using (Image img = new Bitmap(1, 1))
+            using (var g = Graphics.FromImage(img))
+                return g.MeasureString(word.WordString, font);
+        }
+
+        private Point GetWordLocation(SizeF rectangleSize)
+        {
+            Point rectangleLocation;
+            _packer.TryPack((int) rectangleSize.Width, (int) rectangleSize.Height, out rectangleLocation);
+            return rectangleLocation;
+        }
+
+        private int GetNewWidth(SizeF rectangleSize, Point location) =>
+            Math.Max(CurrentWidth, location.X + (int) rectangleSize.Width);
+
+        private int GetNewHeight(SizeF rectangleSize, Point location) =>
+            Math.Max(CurrentHeight, location.Y + (int) rectangleSize.Height);
     }
 }

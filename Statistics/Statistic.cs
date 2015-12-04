@@ -5,9 +5,9 @@ namespace _03_design_hw.Statistics
 {
     public class Statistic
     {
-        public Statistic(List<Word> words)
+        public Statistic(IEnumerable<Word> words)
         {
-            WordsWithFrequency = words;
+            WordsWithFrequency = words.ToList();
             MaxCount = WordsWithFrequency.Max(w => w.Frequency);
             MinCount = WordsWithFrequency.Min(w => w.Frequency);
         }
@@ -15,6 +15,6 @@ namespace _03_design_hw.Statistics
         public int MaxCount{ get; }
         public int MinCount{ get; }
 
-        public List<Word> WordsWithFrequency{ get; }
+        public IReadOnlyList<Word> WordsWithFrequency{ get; }
     }
 }

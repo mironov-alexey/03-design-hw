@@ -8,16 +8,15 @@ using _03_design_hw.Statistics;
 
 namespace _03_design_hw
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             var options = new Options();
             Parser.Default.ParseArguments(args, options);
             var kernel = new StandardKernel();
             kernel.Bind<Options>().ToConstant(options);
-            kernel.Bind<ILoader>().To<BaseLoader>().InSingletonScope();
+            kernel.Bind<ISettingsLoader>().To<BaseSettingsLoader>().InSingletonScope();
             kernel.Bind<ICloudGenerator>().To<SimpleCloudGenerator>();
             kernel.Bind<ICloudData>().To<CloudData>();
             kernel.Bind<RectanglePacker>()
@@ -25,10 +24,14 @@ namespace _03_design_hw
                 .InSingletonScope();
             kernel.Bind<IWordsLoader>().To<WordsLoader>().InSingletonScope();
             kernel.Bind<IBlackListLoader>().To<BlackListLoader>().InSingletonScope();
+
+            var settingsLoader = kernel.Get<ISettingsLoader>();
+            kernel.Bind<Settings>().ToConstant(settingsLoader.Load());
+
             var wordsLoader = kernel.Get<WordsLoader>();
             var stat = kernel.Get<StatisticCalculator>().Calculate(wordsLoader.Words);
             kernel.Bind<Statistic>().ToConstant(stat).InSingletonScope();
-
+            kernel.Bind<IFontCreator>().To<FontCreator>();
             var cloudCreator = kernel.Get<ICloudGenerator>();
             using (var cloud = cloudCreator.GenerateCloudImage())
             {

@@ -7,16 +7,17 @@ namespace _03_design_hw.Statistics
 {
     public class StatisticCalculator : IStatisticCalculator
     {
-        public StatisticCalculator(ILoader configLoader, IBlackListLoader blackListLoader)
-        {
-            _random = new Random();
-            _blackList = blackListLoader.BlackList;
-            _top = configLoader.TagsCount;
-        }
+        private readonly HashSet<string> _blackList;
 
         private readonly Random _random;
         private readonly int _top;
-        private readonly HashSet<string> _blackList;
+
+        public StatisticCalculator(Settings settings, IBlackListLoader blackListLoader)
+        {
+            _random = new Random();
+            _blackList = blackListLoader.BlackList;
+            _top = settings.TagsCount;
+        }
 
         public Statistic Calculate(IEnumerable<string> words)
         {

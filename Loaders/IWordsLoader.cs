@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace _03_design_hw.Loaders
 {
     public interface IWordsLoader
     {
-        IEnumerable<string> Words{ get; } 
+        IEnumerable<string> Words{ get; }
     }
 }

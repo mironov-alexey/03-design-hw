@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CommandLine;
 
 namespace _03_design_hw
@@ -11,11 +10,11 @@ namespace _03_design_hw
 
         [Option('w', "words", DefaultValue = "words.txt",
             HelpText = "Path to words file.")]
-        public string PathToWords { get; set; }
+        public string PathToWords{ get; set; }
 
         [Option('b', "blacklist", DefaultValue = "blacklist.txt",
             HelpText = "Path to blacklist file.")]
-        public string PathToBlackList { get; set; }
+        public string PathToBlackList{ get; set; }
 
         [Option('o', "output", DefaultValue = "cloud.png",
             HelpText = "Path to output file with tags cloud image.")]

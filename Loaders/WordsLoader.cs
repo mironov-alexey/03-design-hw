@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace _03_design_hw.Loaders
 {
@@ -17,9 +12,6 @@ namespace _03_design_hw.Loaders
         }
 
         public IEnumerable<string> Words =>
-            File.ReadLines(_pathToFileWithWords)
-                .Where(s => !string.IsNullOrEmpty(s))
-                .Select(x => x.Trim());
-
+            WordsListLoader.LoadFromFile(_pathToFileWithWords);
     }
 }
