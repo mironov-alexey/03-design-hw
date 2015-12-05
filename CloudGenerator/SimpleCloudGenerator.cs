@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using _03_design_hw.Loaders;
+using _03_design_hw.Statistics;
 
 namespace _03_design_hw.CloudGenerator
 {
@@ -7,12 +8,14 @@ namespace _03_design_hw.CloudGenerator
     {
         private const int MaxImageSize = 5000;
         private readonly Settings _settings;
+        private readonly Statistic _statistic;
         private readonly ICloudData _tags;
 
-        public SimpleCloudGenerator(ICloudData tags, Settings settings)
+        public SimpleCloudGenerator(ICloudData tags, Settings settings, Statistic statistic)
         {
             _tags = tags;
             _settings = settings;
+            _statistic = statistic;
         }
 
         public Image GenerateCloudImage()
@@ -34,7 +37,7 @@ namespace _03_design_hw.CloudGenerator
             var img = new Bitmap(MaxImageSize, MaxImageSize);
             using (var graphics = Graphics.FromImage(img))
             {
-                foreach (var tag in _tags.GetTags())
+                foreach (var tag in _tags.GetTags(_statistic))
                     graphics.DrawString(tag.Word.WordString, tag.Font, new SolidBrush(tag.Color), tag.Location.X,
                         tag.Location.Y);
                 return img;

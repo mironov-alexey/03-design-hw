@@ -5,6 +5,8 @@ using Nuclex.Game.Packing;
 using _03_design_hw.Loaders;
 using _03_design_hw.Statistics;
 using Point = Microsoft.Xna.Framework.Point;
+using Microsoft.Xna.Framework;
+using Color = System.Drawing.Color;
 
 namespace _03_design_hw.CloudGenerator
 {
@@ -13,21 +15,17 @@ namespace _03_design_hw.CloudGenerator
         private readonly Color[] _colors;
         private readonly IFontCreator _fontCreator;
 
-        private readonly RectanglePacker _packer;
+        private readonly IPacker _packer;
 
         private readonly Random _random;
 
         private readonly Settings _settings;
 
-        private readonly Statistic _statistic;
 
-        private readonly IEnumerable<Word> _words;
 
-        public CloudData(Settings settings, Statistic statistic, RectanglePacker packer, IFontCreator fontCreator)
+        public CloudData(Settings settings, IPacker packer, IFontCreator fontCreator)
         {
-            _words = statistic.WordsWithFrequency;
             _settings = settings;
-            _statistic = statistic;
             _colors = settings.Colors;
             _packer = packer;
             _fontCreator = fontCreator;
@@ -41,16 +39,16 @@ namespace _03_design_hw.CloudGenerator
 
         private Color RandomColor => _colors[_random.Next(_colors.Length - 1)];
 
-        public IEnumerable<Tag> GetTags()
+        public IEnumerable<Tag> GetTags(Statistic statistic)
         {
-            foreach (var word in _words)
+            foreach (var word in statistic.WordsWithFrequency)
             {
-                var font = _fontCreator.GetFont(_statistic, word);
+                var font = _fontCreator.GetFont(statistic, word);
                 var rectangleSize = GetTagSize(word, font);
                 var location = GetWordLocation(rectangleSize);
                 var prevWidth = CurrentWidth;
                 var prevHeight = CurrentHeight;
-                var color = RandomColor;
+                Color color = RandomColor;
                 CurrentWidth = GetNewWidth(rectangleSize, location);
                 CurrentHeight = GetNewHeight(rectangleSize, location);
                 if (CurrentHeight > _settings.Height || CurrentWidth > _settings.Width)

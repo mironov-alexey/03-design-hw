@@ -44,6 +44,7 @@ namespace _03_design_hw
             kernel.Bind<Options>().ToConstant(options);
             kernel.Bind<ICloudGenerator>().To<SimpleCloudGenerator>();
             kernel.Bind<ICloudData>().To<CloudData>();
+            kernel.Bind<IPacker>().To<ExternalPacker>();
             kernel.Bind<RectanglePacker>()
                 .ToConstant(new ArevaloRectanglePacker(int.MaxValue, int.MaxValue))
                 .InSingletonScope();

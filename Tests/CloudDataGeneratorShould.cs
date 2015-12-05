@@ -13,6 +13,7 @@ namespace _03_design_hw.Tests
     [TestFixture]
     public class CloudDataGeneratorShould
     {
+        private ExternalPacker GetExternalPacker() => new ExternalPacker(new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
         [SetUp]
         public void SetUp()
         {
@@ -33,7 +34,7 @@ namespace _03_design_hw.Tests
             _fontCreator = new FontCreator(_settings);
             _wordsLoader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
             _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue),
+            _data = new CloudData(_settings, GetExternalPacker(),
                 _fontCreator);
         }
 
@@ -66,9 +67,9 @@ namespace _03_design_hw.Tests
             _settings.Width = 200;
             _settings.Height = 200;
             _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue),
+            _data = new CloudData(_settings, GetExternalPacker(),
                 _fontCreator);
-            var tagsCount = _data.GetTags().Count();
+            var tagsCount = _data.GetTags(_statistic).Count();
             Assert.AreEqual(_wordsLoader.Object.Words.Distinct().Count(), tagsCount);
         }
 
@@ -79,9 +80,9 @@ namespace _03_design_hw.Tests
             _settings.Width = 200;
             _settings.Height = 200;
             _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue),
+            _data = new CloudData(_settings, GetExternalPacker(),
                 _fontCreator);
-            var tagsCount = _data.GetTags().Count();
+            var tagsCount = _data.GetTags(_statistic).Count();
             Assert.AreEqual(_settings.TagsCount, tagsCount);
         }
 
@@ -91,23 +92,23 @@ namespace _03_design_hw.Tests
             _settings.Width = 200;
             _settings.Height = 200;
             _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue),
+            _data = new CloudData(_settings, GetExternalPacker(),
                 _fontCreator);
             CollectionAssert.AreEquivalent(
                 _statistic.WordsWithFrequency.Select(w => w.WordString),
-                _data.GetTags().Select(t => t.Word.WordString));
+                _data.GetTags(_statistic).Select(t => t.Word.WordString));
         }
 
         [Test]
         public void GenerateOnlyOneTagForWord()
         {
-            CollectionAssert.AllItemsAreUnique(_data.GetTags().Select(t => t.Word.WordString));
+            CollectionAssert.AllItemsAreUnique(_data.GetTags(_statistic).Select(t => t.Word.WordString));
         }
 
         [Test]
         public void TrimDoesntFitTags()
         {
-            var tagsCount = _data.GetTags().Count();
+            var tagsCount = _data.GetTags(_statistic).Count();
             Assert.Less(tagsCount, 3);
         }
 
@@ -117,10 +118,9 @@ namespace _03_design_hw.Tests
             _settings.Width = 200;
             _settings.Height = 200;
             _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue),
-                _fontCreator);
+            _data = new CloudData(_settings, GetExternalPacker(), _fontCreator);
             var currentSize = new SizeF(_data.CurrentWidth, _data.CurrentHeight);
-            _data.GetTags().Count();
+            _data.GetTags(_statistic).Count();
             var newSize = new SizeF(_data.CurrentWidth, _data.CurrentHeight);
             Assert.AreNotEqual(currentSize, newSize);
         }
