@@ -12,8 +12,8 @@ namespace _03_design_hw.Statistics
             MinCount = WordsWithFrequency.Min(w => w.Frequency);
         }
 
-        public virtual int MaxCount{ get; }
-        public virtual int MinCount{ get; }
+        public int MaxCount{ get; }
+        public int MinCount{ get; }
 
         public IReadOnlyList<Word> WordsWithFrequency{ get; }
     }
