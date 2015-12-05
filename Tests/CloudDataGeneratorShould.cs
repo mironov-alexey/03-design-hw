@@ -30,6 +30,7 @@ namespace _03_design_hw.Tests
                 SpellingDictionaries = new Dictionary<string, string>(),
                 TagsCount = 3
             };
+            _fontCreator = new FontCreator(_settings);
             _wordsLoader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
             _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
             _data = new CloudData(_settings, _statistic, new ArevaloRectanglePacker(int.MaxValue, int.MaxValue),
@@ -41,13 +42,13 @@ namespace _03_design_hw.Tests
         private Mock<IBlackListLoader> _blackListLoader;
         private Statistic _statistic;
         private CloudData _data;
-        private readonly IFontCreator _fontCreator = new FontCreator();
+        private IFontCreator _fontCreator;
 
         [Test]
         public void Correctly_GetFont_WithMaxSize()
         {
             var orderedWords = _statistic.WordsWithFrequency.OrderByDescending(w => w.Frequency).ToList();
-            var actualFont = _fontCreator.GetFont(_settings, _statistic, orderedWords[0]);
+            var actualFont = _fontCreator.GetFont( _statistic, orderedWords[0]);
             Assert.AreEqual(new Font("Arial", 20), actualFont);
         }
 
@@ -55,7 +56,7 @@ namespace _03_design_hw.Tests
         public void Correctly_GetFont_WithMinSize()
         {
             var orderedWords = _statistic.WordsWithFrequency.OrderByDescending(w => w.Frequency).ToList();
-            var actualFont = _fontCreator.GetFont(_settings, _statistic, orderedWords[2]);
+            var actualFont = _fontCreator.GetFont(_statistic, orderedWords[2]);
             Assert.AreEqual(new Font("Arial", 10), actualFont);
         }
 

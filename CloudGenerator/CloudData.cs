@@ -45,7 +45,7 @@ namespace _03_design_hw.CloudGenerator
         {
             foreach (var word in _words)
             {
-                var font = _fontCreator.GetFont(_settings, _statistic, word);
+                var font = _fontCreator.GetFont(_statistic, word);
                 var rectangleSize = GetTagSize(word, font);
                 var location = GetWordLocation(rectangleSize);
                 var prevWidth = CurrentWidth;

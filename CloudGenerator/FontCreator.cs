@@ -6,12 +6,19 @@ namespace _03_design_hw.CloudGenerator
 {
     public class FontCreator : IFontCreator
     {
-        public Font GetFont(Settings settings, Statistic statistic, Word word)
+        private readonly Settings _settings;
+
+        public FontCreator(Settings settings)
         {
-            var size = settings.MaxFontSize*(word.Frequency - statistic.MinCount)/
+            _settings = settings;
+        }
+
+        public Font GetFont(Statistic statistic, Word word)
+        {
+            var size = _settings.MaxFontSize*(word.Frequency - statistic.MinCount)/
                        (statistic.MaxCount - statistic.MinCount);
-            size = size < settings.MinFontSize ? size + settings.MinFontSize : size;
-            return new Font(settings.FontName, size);
+            size = size < _settings.MinFontSize ? size + _settings.MinFontSize : size;
+            return new Font(_settings.FontName, size);
         }
     }
 }
