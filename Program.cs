@@ -14,6 +14,17 @@ namespace _03_design_hw
         {
             var options = new Options();
             Parser.Default.ParseArguments(args, options);
+            StandardKernel kernel = GetKernel(options);
+            var cloudCreator = kernel.Get<ICloudGenerator>();
+            using (var cloud = cloudCreator.GenerateCloudImage())
+            {
+                var cloudSaver = kernel.Get<CloudSaver>();
+                cloudSaver.Save(cloud);
+            }
+        }
+
+        private static StandardKernel GetKernel(Options options)
+        {
             var kernel = new StandardKernel();
             kernel.Bind<Options>().ToConstant(options);
             kernel.Bind<ISettingsLoader>().To<BaseSettingsLoader>().InSingletonScope();
@@ -32,14 +43,7 @@ namespace _03_design_hw
             var stat = kernel.Get<StatisticCalculator>().Calculate(wordsLoader.Words);
             kernel.Bind<Statistic>().ToConstant(stat).InSingletonScope();
             kernel.Bind<IFontCreator>().To<FontCreator>();
-            var cloudCreator = kernel.Get<ICloudGenerator>();
-            using (var cloud = cloudCreator.GenerateCloudImage())
-            {
-                var cloudSaver = kernel.Get<CloudSaver>();
-                cloudSaver.Save(cloud);
-            }
-            // TODO: как-нибудь вынести метод GetWordLocation в отдельный класс (e.g. Algorithm)
-            // TODO: + интерфейс IAlgorithm ? Для поддержки разных алгоритмов расположения прямоугольников на плоскости
+            return kernel;
         }
     }
 }
