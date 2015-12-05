@@ -48,7 +48,7 @@ namespace _03_design_hw.Tests
         public void Correctly_GetFont_WithMaxSize()
         {
             var orderedWords = _statistic.WordsWithFrequency.OrderByDescending(w => w.Frequency).ToList();
-            var actualFont = _fontCreator.GetFont( _statistic, orderedWords[0]);
+            var actualFont = _fontCreator.GetFont(_statistic, orderedWords[0]);
             Assert.AreEqual(new Font("Arial", 20), actualFont);
         }
 

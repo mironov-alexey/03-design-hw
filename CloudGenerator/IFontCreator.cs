@@ -1,5 +1,4 @@
 using System.Drawing;
-using _03_design_hw.Loaders;
 using _03_design_hw.Statistics;
 
 namespace _03_design_hw.CloudGenerator

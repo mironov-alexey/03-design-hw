@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using NUnit.Framework;
 using _03_design_hw.Loaders;
 
@@ -14,19 +9,20 @@ namespace _03_design_hw.Tests
         private const string TestFileName = "loader_test.txt";
         private BlackListLoader _blackListLoader;
         private Options _options;
+
         [SetUp]
         public void SetUp()
         {
-            _options = new Options { PathToBlackList = TestFileName };
+            _options = new Options {PathToBlackList = TestFileName};
             _blackListLoader = new BlackListLoader(_options);
         }
 
         [Test]
         public void LoadWordsFromFile()
         {
-            File.WriteAllLines(TestFileName, new[] { "a", "a", "a", "a", "b", "b", "b", "c", "c", "c", "d" });
+            File.WriteAllLines(TestFileName, new[] {"a", "a", "a", "a", "b", "b", "b", "c", "c", "c", "d"});
             var actualWords = _blackListLoader.BlackList;
-            CollectionAssert.AreEqual(actualWords, new[] { "a", "b", "c", "d" });
+            CollectionAssert.AreEqual(actualWords, new[] {"a", "b", "c", "d"});
         }
     }
 }
