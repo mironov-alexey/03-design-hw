@@ -143,6 +143,7 @@
     <Compile Include="Savers\ICloudSaver.cs" />
     <Compile Include="Loaders\IBlackListLoader.cs" />
     <Compile Include="Tests\FontCreatorShould.cs" />
+    <Compile Include="Tests\PackerShould.cs" />
     <Compile Include="Tests\StatisticCalculatorShould.cs" />
     <Compile Include="CloudGenerator\WordExtensions.cs" />
     <Compile Include="Statistics\Statistic.cs" />

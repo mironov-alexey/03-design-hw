@@ -4,6 +4,6 @@ namespace _03_design_hw.CloudGenerator
 {
     public interface IPacker
     {
-        void TryPack(int width, int height, out Point rectangleLocation);
+        Point Pack(int width, int height);
     }
 }

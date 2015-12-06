@@ -14,7 +14,7 @@ namespace _03_design_hw
         {
             var options = new Options();
             Parser.Default.ParseArguments(args, options);
-            StandardKernel kernel = GetKernel(options);
+            var kernel = GetKernel(options);
             var cloudCreator = kernel.Get<ICloudGenerator>();
             using (var cloud = cloudCreator.GenerateCloudImage())
             {

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Nuclex.Game.Packing;
 using _03_design_hw.Loaders;
 using _03_design_hw.Statistics;
 using Point = Microsoft.Xna.Framework.Point;
-using Microsoft.Xna.Framework;
-using Color = System.Drawing.Color;
 
 namespace _03_design_hw.CloudGenerator
 {
@@ -21,8 +18,6 @@ namespace _03_design_hw.CloudGenerator
 
         private readonly Settings _settings;
 
-
-
         public CloudData(Settings settings, IPacker packer, IFontCreator fontCreator)
         {
             _settings = settings;
@@ -31,7 +26,6 @@ namespace _03_design_hw.CloudGenerator
             _fontCreator = fontCreator;
             _random = new Random();
         }
-
 
         public int CurrentWidth{ get; private set; }
 
@@ -48,7 +42,7 @@ namespace _03_design_hw.CloudGenerator
                 var location = GetWordLocation(rectangleSize);
                 var prevWidth = CurrentWidth;
                 var prevHeight = CurrentHeight;
-                Color color = RandomColor;
+                var color = RandomColor;
                 CurrentWidth = GetNewWidth(rectangleSize, location);
                 CurrentHeight = GetNewHeight(rectangleSize, location);
                 if (CurrentHeight > _settings.Height || CurrentWidth > _settings.Width)
@@ -70,9 +64,7 @@ namespace _03_design_hw.CloudGenerator
 
         private Point GetWordLocation(SizeF rectangleSize)
         {
-            Point rectangleLocation;
-            _packer.TryPack((int) rectangleSize.Width, (int) rectangleSize.Height, out rectangleLocation);
-            return rectangleLocation;
+            return _packer.Pack((int) rectangleSize.Width, (int) rectangleSize.Height);
         }
 
         private int GetNewWidth(SizeF rectangleSize, Point location) =>
