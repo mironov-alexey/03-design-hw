@@ -25,7 +25,7 @@ namespace _03_design_hw.Tests
 
         private IFontCreator _fontCreator;
         private Settings _settings;
-        private Statistic _statistic;
+        private IStatistic _statistic;
 
         [Test]
         public void Correctly_GetFontMaxSize()

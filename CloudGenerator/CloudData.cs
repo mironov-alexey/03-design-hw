@@ -33,7 +33,7 @@ namespace _03_design_hw.CloudGenerator
 
         private Color RandomColor => _colors[_random.Next(_colors.Length - 1)];
 
-        public IEnumerable<Tag> GetTags(Statistic statistic)
+        public IEnumerable<Tag> GetTags(IStatistic statistic)
         {
             foreach (var word in statistic.WordsWithFrequency)
             {
@@ -46,11 +46,7 @@ namespace _03_design_hw.CloudGenerator
                 CurrentWidth = GetNewWidth(rectangleSize, location);
                 CurrentHeight = GetNewHeight(rectangleSize, location);
                 if (CurrentHeight > _settings.Height || CurrentWidth > _settings.Width)
-                {
-                    CurrentHeight = prevHeight;
-                    CurrentWidth = prevWidth;
                     yield break;
-                }
                 yield return new Tag(word, location, font, color);
             }
         }

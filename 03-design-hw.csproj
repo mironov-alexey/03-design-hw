@@ -116,12 +116,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudGenerator\BlackListFilter.cs" />
     <Compile Include="CloudGenerator\CloudData.cs" />
     <Compile Include="CloudGenerator\ExternalPacker.cs" />
     <Compile Include="CloudGenerator\FontCreator.cs" />
     <Compile Include="CloudGenerator\ICloudGenerator.cs" />
     <Compile Include="CloudGenerator\IFontCreator.cs" />
     <Compile Include="CloudGenerator\IPacker.cs" />
+    <Compile Include="CloudGenerator\IWordsFilter.cs" />
     <Compile Include="CloudGenerator\SimpleCloudGenerator.cs" />
     <Compile Include="CloudGenerator\ICloudData.cs" />
     <Compile Include="Loaders\IWordsLoader.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Loaders\WordsListLoader.cs" />
     <Compile Include="Loaders\WordsLoader.cs" />
     <Compile Include="Loaders\BaseSettingsLoader.cs" />
+    <Compile Include="Statistics\IStatistic.cs" />
     <Compile Include="Statistics\IStatisticCalculator.cs" />
     <Compile Include="Statistics\StatisticCalculator.cs" />
     <Compile Include="CloudGenerator\Tag.cs" />

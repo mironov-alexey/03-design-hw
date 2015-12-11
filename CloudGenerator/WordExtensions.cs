@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _03_design_hw
+namespace _03_design_hw.CloudGenerator
 {
     public static class WordExtensions
     {
-        public static IEnumerable<string> FilterBannedWords(this IEnumerable<string> words, HashSet<string> blackList)
+        public static IEnumerable<string> FilterBannedWords(this IEnumerable<string> words, IWordsFilter filter)
             =>
-                words.Where(w => !blackList.Contains(w));
+                words.Where(filter.Filter);
+
     }
 }

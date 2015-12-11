@@ -5,6 +5,6 @@ namespace _03_design_hw.CloudGenerator
 {
     public interface IFontCreator
     {
-        Font GetFont(Statistic statistic, Word word);
+        Font GetFont(IStatistic statistic, Word word);
     }
 }

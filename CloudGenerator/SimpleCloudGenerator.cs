@@ -8,10 +8,10 @@ namespace _03_design_hw.CloudGenerator
     {
         private const int MaxImageSize = 5000;
         private readonly Settings _settings;
-        private readonly Statistic _statistic;
+        private readonly IStatistic _statistic;
         private readonly ICloudData _tags;
 
-        public SimpleCloudGenerator(ICloudData tags, Settings settings, Statistic statistic)
+        public SimpleCloudGenerator(ICloudData tags, Settings settings, IStatistic statistic)
         {
             _tags = tags;
             _settings = settings;

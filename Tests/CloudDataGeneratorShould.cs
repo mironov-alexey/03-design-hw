@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Moq;
 using Nuclex.Game.Packing;
 using NUnit.Framework;
 using _03_design_hw.CloudGenerator;
 using _03_design_hw.Loaders;
 using _03_design_hw.Statistics;
+using Color = System.Drawing.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace _03_design_hw.Tests
 {
@@ -17,8 +20,6 @@ namespace _03_design_hw.Tests
         public void SetUp()
         {
             _wordsLoader = new Mock<IWordsLoader>();
-            _blackListLoader = new Mock<IBlackListLoader>();
-            _blackListLoader.Setup(x => x.BlackList).Returns(new HashSet<string>());
             _settings = new Settings
             {
                 Colors = new[] {Color.DarkRed, Color.Black, Color.Coral},
@@ -31,36 +32,35 @@ namespace _03_design_hw.Tests
                 TagsCount = 3
             };
             _fontCreator = new Mock<IFontCreator>();
-            _fontCreator.Setup(x => x.GetFont(It.IsAny<Statistic>(), It.IsAny<Word>())).Returns(new Font("Arial", 10));
+            _fontCreator.Setup(x => x.GetFont(It.IsAny<IStatistic>(), It.IsAny<Word>())).Returns(new Font("Arial", 10));
             _wordsLoader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
-            _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, GetExternalPacker(),
+            _statistic = new Mock<IStatistic>();
+            _statistic.Setup(x => x.WordsWithFrequency).Returns(new List<Word> {new Word("a", 1), new Word("b", 2), new Word("c", 3)});
+            _packer = new Mock<IPacker>();
+            _data = new CloudData(_settings, _packer.Object,
                 _fontCreator.Object);
         }
 
-        private static ExternalPacker GetExternalPacker()
-            => new ExternalPacker(new ArevaloRectanglePacker(int.MaxValue, int.MaxValue));
-
         private Settings _settings;
         private Mock<IWordsLoader> _wordsLoader;
-        private Mock<IBlackListLoader> _blackListLoader;
-        private Statistic _statistic;
+        private Mock<IPacker> _packer;
+        private Mock<IStatistic> _statistic;
         private CloudData _data;
         private Mock<IFontCreator> _fontCreator;
 
         [Test]
         public void Correctly_GetFont_WithMaxSize()
         {
-            _fontCreator.Setup(x => x.GetFont(It.IsAny<Statistic>(), It.IsAny<Word>())).Returns(new Font("Arial", 20));
-            foreach (var tag in _data.GetTags(_statistic))
-                Assert.AreEqual(new Font("Arial", 20), tag.Font);
+            _fontCreator.Setup(x => x.GetFont(It.IsAny<IStatistic>(), It.IsAny<Word>())).Returns(new Font("Arial", 20));
+            foreach (var tag in _data.GetTags(_statistic.Object))
+                Assert.AreEqual(_fontCreator.Object.GetFont(_statistic.Object, tag.Word), tag.Font);
         }
 
         [Test]
         public void Correctly_GetFont_WithMinSize()
         {
-            foreach (var tag in _data.GetTags(_statistic))
-                Assert.AreEqual(new Font("Arial", 10), tag.Font);
+            foreach (var tag in _data.GetTags(_statistic.Object))
+                Assert.AreEqual(_fontCreator.Object.GetFont(_statistic.Object, tag.Word), tag.Font);
         }
 
         [Test]
@@ -68,24 +68,10 @@ namespace _03_design_hw.Tests
         {
             _settings.Width = 200;
             _settings.Height = 200;
-            _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, GetExternalPacker(),
+            _data = new CloudData(_settings, _packer.Object,
                 _fontCreator.Object);
-            var tagsCount = _data.GetTags(_statistic).Count();
+            var tagsCount = _data.GetTags(_statistic.Object).Count();
             Assert.AreEqual(_wordsLoader.Object.Words.Distinct().Count(), tagsCount);
-        }
-
-        [Test]
-        public void Correctly_GetTopTags()
-        {
-            _settings.TagsCount = 2;
-            _settings.Width = 200;
-            _settings.Height = 200;
-            _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, GetExternalPacker(),
-                _fontCreator.Object);
-            var tagsCount = _data.GetTags(_statistic).Count();
-            Assert.AreEqual(_settings.TagsCount, tagsCount);
         }
 
         [Test]
@@ -93,24 +79,24 @@ namespace _03_design_hw.Tests
         {
             _settings.Width = 200;
             _settings.Height = 200;
-            _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, GetExternalPacker(),
+            _data = new CloudData(_settings, _packer.Object,
                 _fontCreator.Object);
             CollectionAssert.AreEquivalent(
-                _statistic.WordsWithFrequency.Select(w => w.WordString),
-                _data.GetTags(_statistic).Select(t => t.Word.WordString));
+                _statistic.Object.WordsWithFrequency.Select(w => w.WordString),
+                _data.GetTags(_statistic.Object).Select(t => t.Word.WordString));
         }
 
         [Test]
         public void GenerateOnlyOneTagForWord()
         {
-            CollectionAssert.AllItemsAreUnique(_data.GetTags(_statistic).Select(t => t.Word.WordString));
+            CollectionAssert.AllItemsAreUnique(_data.GetTags(_statistic.Object).Select(t => t.Word.WordString));
         }
 
         [Test]
         public void TrimDoesntFitTags()
         {
-            var tagsCount = _data.GetTags(_statistic).Count();
+            _packer.Setup(x => x.Pack(It.IsAny<int>(), It.IsAny<int>())).Returns(new Point(30, 30));
+            var tagsCount = _data.GetTags(_statistic.Object).Count();
             Assert.Less(tagsCount, 3);
         }
 
@@ -119,10 +105,9 @@ namespace _03_design_hw.Tests
         {
             _settings.Width = 200;
             _settings.Height = 200;
-            _statistic = new StatisticCalculator(_settings, _blackListLoader.Object).Calculate(_wordsLoader.Object.Words);
-            _data = new CloudData(_settings, GetExternalPacker(), _fontCreator.Object);
+            _data = new CloudData(_settings, _packer.Object, _fontCreator.Object);
             var currentSize = new SizeF(_data.CurrentWidth, _data.CurrentHeight);
-            _data.GetTags(_statistic).Count();
+            _data.GetTags(_statistic.Object).Count();
             var newSize = new SizeF(_data.CurrentWidth, _data.CurrentHeight);
             Assert.AreNotEqual(currentSize, newSize);
         }

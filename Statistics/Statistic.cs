@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace _03_design_hw.Statistics
 {
-    public class Statistic
+    public class Statistic : IStatistic
     {
         public Statistic(IEnumerable<Word> words)
         {

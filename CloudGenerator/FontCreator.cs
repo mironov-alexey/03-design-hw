@@ -13,7 +13,7 @@ namespace _03_design_hw.CloudGenerator
             _settings = settings;
         }
 
-        public Font GetFont(Statistic statistic, Word word)
+        public Font GetFont(IStatistic statistic, Word word)
         {
             var size = _settings.MaxFontSize*(word.Frequency - statistic.MinCount)/
                        (statistic.MaxCount - statistic.MinCount);

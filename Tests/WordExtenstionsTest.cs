@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
+using _03_design_hw.CloudGenerator;
+using _03_design_hw.Loaders;
 
 namespace _03_design_hw.Tests
 {
@@ -28,8 +31,9 @@ namespace _03_design_hw.Tests
                 "b",
                 "f"
             };
-            var bannedWords = new HashSet<string> {"b", "c", "d"};
-            var filteredWords = words.FilterBannedWords(bannedWords);
+            var wordsFilter = new Mock<IWordsFilter>();
+            wordsFilter.Setup(x => x.Filter(It.IsNotIn("b", "c", "d"))).Returns(true);
+            var filteredWords = words.FilterBannedWords(wordsFilter.Object);
             CollectionAssert.AreEquivalent(new List<string> {"a", "e", "e", "e", "a", "f"}, filteredWords);
         }
     }

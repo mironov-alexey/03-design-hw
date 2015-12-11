@@ -14,9 +14,7 @@ namespace _03_design_hw.CloudGenerator
 
         public Point Pack(int width, int height)
         {
-            Point rectangleLocation;
-            _packer.TryPack(width, height, out rectangleLocation);
-            return rectangleLocation;
+            return _packer.Pack(width, height);
         }
     }
 }

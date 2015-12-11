@@ -48,7 +48,7 @@ namespace _03_design_hw
             kernel.Bind<RectanglePacker>()
                 .ToConstant(new ArevaloRectanglePacker(int.MaxValue, int.MaxValue))
                 .InSingletonScope();
-
+            kernel.Bind<IWordsFilter>().To<BlackListFilter>();
             kernel.Bind<ISettingsLoader>().To<BaseSettingsLoader>().InSingletonScope();
             kernel.Bind<IWordsLoader>().To<WordsLoader>().InSingletonScope();
             kernel.Bind<IBlackListLoader>().To<BlackListLoader>().InSingletonScope();
