@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using _03_design_hw.CloudGenerator;
-using _03_design_hw.Loaders;
 
 namespace _03_design_hw.Tests
 {

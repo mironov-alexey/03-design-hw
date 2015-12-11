@@ -14,6 +14,5 @@ namespace _03_design_hw.CloudGenerator
 
         public bool Filter(string word) =>
             !_blackList.Contains(word);
-
     }
 }

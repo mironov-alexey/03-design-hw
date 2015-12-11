@@ -8,6 +8,5 @@ namespace _03_design_hw.CloudGenerator
         public static IEnumerable<string> FilterBannedWords(this IEnumerable<string> words, IWordsFilter filter)
             =>
                 words.Where(filter.Filter);
-
     }
 }

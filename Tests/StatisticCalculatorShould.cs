@@ -22,7 +22,6 @@ namespace _03_design_hw.Tests
             _blackListFilter = new Mock<IWordsFilter>();
             _blackListFilter.Setup(x => x.Filter(It.IsAny<string>())).Returns(true);
             _wordsLoader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
-
         }
 
         private Settings _settings;

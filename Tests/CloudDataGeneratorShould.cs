@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Moq;
-using Nuclex.Game.Packing;
 using NUnit.Framework;
 using _03_design_hw.CloudGenerator;
 using _03_design_hw.Loaders;
 using _03_design_hw.Statistics;
-using Color = System.Drawing.Color;
 using Point = Microsoft.Xna.Framework.Point;
 
 namespace _03_design_hw.Tests
@@ -35,7 +32,8 @@ namespace _03_design_hw.Tests
             _fontCreator.Setup(x => x.GetFont(It.IsAny<IStatistic>(), It.IsAny<Word>())).Returns(new Font("Arial", 10));
             _wordsLoader.Setup(x => x.Words).Returns(new List<string> {"a", "b", "b", "c", "c", "c"});
             _statistic = new Mock<IStatistic>();
-            _statistic.Setup(x => x.WordsWithFrequency).Returns(new List<Word> {new Word("a", 1), new Word("b", 2), new Word("c", 3)});
+            _statistic.Setup(x => x.WordsWithFrequency)
+                .Returns(new List<Word> {new Word("a", 1), new Word("b", 2), new Word("c", 3)});
             _packer = new Mock<IPacker>();
             _data = new CloudData(_settings, _packer.Object,
                 _fontCreator.Object);
